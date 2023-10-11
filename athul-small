@@ -1,0 +1,319 @@
+s5c17@CC2-31:~$ mysql -u s5c17@localhost -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.33-0ubuntu0.16.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE LIBRARY;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DROP DATABASE LIBRARY;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE DATABASE LIBRARY;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CREATE DATABASE LIBRARY;
+ERROR 1007 (HY000): Can't create database 'LIBRARY'; database exists
+mysql> CREATE TABLE PUBISHER(PUBLISHER_ID INT,NAME VARCHAR(20),ADDRESS VARCHAR(20),PRIMARY KEY(PUBLISHER_ID));
+ERROR 1046 (3D000): No database selected
+mysql> USE LIBRARY;
+Database changed
+mysql> CREATE TABLE PUBISHER(PUBLISHER_ID INT,NAME VARCHAR(20),ADDRESS VARCHAR(20),PRIMARY KEY(PUBLISHER_ID));
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> DESCRIBE PUBLISHER;
+ERROR 1146 (42S02): Table 'LIBRARY.PUBLISHER' doesn't exist
+mysql>     ALTER TABLE PUBISHER RENAME PUBLISHER;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> DESCRIBE PUBLISHER;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| PUBLISHER_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME         | varchar(20) | YES  |     | NULL    |       |
+| ADDRESS      | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE LANGUAGE(LANG_ID INT,NAME VARCHAR(20),PRIMARY KEY(LANG_ID)); 
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> DESCRIBE LANGUAGE;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| LANG_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME    | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE BOOK(BOOK_ID INT PRIMARY KEY,TITLE VARCHAR(40),LANGUAGE_ID INT,MRP BIGINT,PUBLISHER_ID INT,PUBLISHED_DATE DATE,VOLUME INT,STATUS VARCHAR(20),FOREIGN KEY(LANGUAGE_ID) REFERENCES LANGUAGE(LANG_ID),FOREIGN KEY(PUBLISHER_ID) REFERENCES PUBLISHER(PUBLISHER_ID));
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> DESCRIBE BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> CREATE TABLE AUTHOR(AUTHOR_ID INT PRIMARY KEY,NAME VARCHAR(20),EMAIL VARCHAR(20),PH_NO INT,STATUS VARCHAR(20));
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> DESCRIBE AUTHOR;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| AUTHOR_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME      | varchar(20) | YES  |     | NULL    |       |
+| EMAIL     | varchar(20) | YES  |     | NULL    |       |
+| PH_NO     | int(11)     | YES  |     | NULL    |       |
+| STATUS    | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE BOOK_AUTHOR(BOOK_ID INT,AUTHOR_ID INT,PRIMARY KEY(BOOK_ID,AUTHOR_ID),FOREIGN KEY (BOOK_ID) REFERENCES BOOK(BOOK_ID),FOREIGN
+ KEY (AUTHOR_ID) REFERENCES AUTHOR(AUTHOR_ID));
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> DESCRIBE BOOK_AUTHOR;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| BOOK_ID   | int(11) | NO   | PRI | NULL    |       |
+| AUTHOR_ID | int(11) | NO   | PRI | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE MEMBER(MEMBER_ID INT PRIMARY KEY,NAME VARCHAR(20),BRANCH_CODE INT,ROLL_NO INT,EMAIL VARCHAR(40),DATE_OF_JOIN DATE,STATUS VARCHAR(20));
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> DESCRIBE MEMBER;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| MEMBER_ID    | int(11)     | NO   | PRI | NULL    |       |
+| NAME         | varchar(20) | YES  |     | NULL    |       |
+| BRANCH_CODE  | int(11)     | YES  |     | NULL    |       |
+| ROLL_NO      | int(11)     | YES  |     | NULL    |       |
+| EMAIL        | varchar(40) | YES  |     | NULL    |       |
+| DATE_OF_JOIN | date        | YES  |     | NULL    |       |
+| STATUS       | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+
+mysql> CREATE TABLE BOOK_ISSUE(ISSUE_ID INT PRIMARY KEY,DATE_OF_ISSUE DATE,BOOK_ID INT,MEMBER_ID INT,EXPECTED_DATE DATE,FOREIGN KEY(BOOK_ID) REFERENCES BOOK(BOOK_ID),FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(MEMBER_ID));
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> DESCRIBE BOOK_ISSUE;
++---------------+---------+------+-----+---------+-------+
+| Field         | Type    | Null | Key | Default | Extra |
++---------------+---------+------+-----+---------+-------+
+| ISSUE_ID      | int(11) | NO   | PRI | NULL    |       |
+| DATE_OF_ISSUE | date    | YES  |     | NULL    |       |
+| BOOK_ID       | int(11) | YES  | MUL | NULL    |       |
+| MEMBER_ID     | int(11) | YES  | MUL | NULL    |       |
+| EXPECTED_DATE | date    | YES  |     | NULL    |       |
++---------------+---------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE BOOK_RETURN(ISSUE_ID INT,ACTUAL_DATE_OF_RETURN DATE,LATE_DAYS INT,LATE_FEE INT,FOREIGN KEY(ISSUE_ID) REFERENCES BOOK_ISSUE(ISSUE_ID));
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> DESC BOOK_RETURN;
++-----------------------+---------+------+-----+---------+-------+
+| Field                 | Type    | Null | Key | Default | Extra |
++-----------------------+---------+------+-----+---------+-------+
+| ISSUE_ID              | int(11) | YES  | MUL | NULL    |       |
+| ACTUAL_DATE_OF_RETURN | date    | YES  |     | NULL    |       |
+| LATE_DAYS             | int(11) | YES  |     | NULL    |       |
+| LATE_FEE              | int(11) | YES  |     | NULL    |       |
++-----------------------+---------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> CREATE TABLE LATE_FEE_RULE(FROM_DAYS INT,TO_DAYS INT,AMOUNT INT,PRIMARY KEY(FROM_DAYS,TO_DAYS,AMOUNT));
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> DESC LATE_FEE_RULE;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| FROM_DAYS | int(11) | NO   | PRI | NULL    |       |
+| TO_DAYS   | int(11) | NO   | PRI | NULL    |       |
+| AMOUNT    | int(11) | NO   | PRI | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE STUDENT(NAME VARCHAR(20),FOREIGN KEY(NAME) REFERENCES MEMBER(NAME));
+ERROR 1215 (HY000): Cannot add foreign key constraint
+mysql> CREATE TABLE STUDENT(NAME VARCHAR(20),ROLL INT PRIMARY KEY,FOREIGN KEY(ROLL) REFERENCES MEMBER(MEMBER_ID));
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> DESC STUDENT
+    -> DESC STUDENT;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DESC STUDENT' at line 2
+mysql> DESCRIBE STUDENT;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| NAME  | varchar(20) | YES  |     | NULL    |       |
+| ROLL  | int(11)     | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> DROP TABLE STUDENT;
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> CREATE TABLE STUDENT(NAME VARCHAR(20),ROLL INT PRIMARY KEY,FOREIGN KEY(ROLL) REFERENCES MEMBER(MEMBER_ID));
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> CREATE TABLE STUD(ID INT PRIMARY KEY,FORIGN KEY (ID)REFERENCES STUDENT(ROLL));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'KEY (ID)REFERENCES STUDENT(ROLL))' at line 1
+mysql> CREATE TABLE STUD(ID INT PRIMARY KEY,FORIGN KEY(ID) REFERENCES STUDENT(ROLL));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'KEY(ID) REFERENCES STUDENT(ROLL))' at line 1
+mysql> CREATE TABLE STUD(ID INT PRIMARY KEY,FOREIGN KEY (ID)REFERENCES STUDENT(ROLL));
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> DESC STUD;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| ID    | int(11) | NO   | PRI | NULL    |       |
++-------+---------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> DROP STUDENT;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'STUDENT' at line 1
+mysql> DROP TABLE STUDENT;
+ERROR 1217 (23000): Cannot delete or update a parent row: a foreign key constraint fails
+mysql> ALTER TABLE STUDENT DROP NAME;
+Query OK, 0 rows affected (0.44 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESCRIBE STUDENT;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| ROLL  | int(11) | NO   | PRI | NULL    |       |
++-------+---------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT DROP ROLL;
+ERROR 1090 (42000): You can't delete all columns with ALTER TABLE; use DROP TABLE instead
+mysql> DROP TABLE STUDENT;
+ERROR 1217 (23000): Cannot delete or update a parent row: a foreign key constraint fails
+mysql> DROP TABLE STUD;
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> DROP TABLE STUDENT;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DROP TABLE BOOK_RETURN;
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> CREATE TABLE BOOK_RETURN(ISSUE_ID INT,ACTUAL_DATE_OF_RETURN DATE,LATE_DAYS INT,LATE_FEE INT,FOREIGN KEY(ISSUE_ID) REFERENCES BOOK_ISSUE(ISSUE_ID));
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> DROP TABLE BOOK_ISSUE;
+ERROR 1217 (23000): Cannot delete or update a parent row: a foreign key constraint fails
+mysql> DROP TABLE BOOK_RETURN;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> DROP TABLE BOOK_RETURN;
+ERROR 1051 (42S02): Unknown table 'LIBRARY.BOOK_RETURN'
+mysql> DROP TABLE BOOK_ISSUE;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE BOOK_RETURN(ISSUE_ID INT,ACTUAL_DATE_OF_RETURN DATE,LATE_DAYS INT,LATE_FEE INT,FOREIGN KEY(ISSUE_ID) REFERENCES BOOK_ISSUE(ISSUE_ID));
+ERROR 1215 (HY000): Cannot add foreign key constraint
+mysql> CREATE TABLE BOOK_ISSUE(ISSUE_ID INT PRIMARY KEY,DATE_OF_ISSUE DATE,BOOK_ID INT,MEMBER_ID INT,EXPECTED_DATE DATE,FOREIGN KEY(BOOK_ID) REFERENCES BOOK(BOOK_ID),FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(MEMBER_ID));
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> CREATE TABLE BOOK_RETURN(ISSUE_ID INT,ACTUAL_DATE_OF_RETURN DATE,LATE_DAYS INT,LATE_FEE INT,FOREIGN KEY(ISSUE_ID) REFERENCES BOOK_ISSUE(ISSUE
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> DESCRIBE BOOK_RETURN;
++-----------------------+---------+------+-----+---------+-------+
+| Field                 | Type    | Null | Key | Default | Extra |
++-----------------------+---------+------+-----+---------+-------+
+| ISSUE_ID              | int(11) | YES  | MUL | NULL    |       |
+| ACTUAL_DATE_OF_RETURN | date    | YES  |     | NULL    |       |
+| LATE_DAYS             | int(11) | YES  |     | NULL    |       |
+| LATE_FEE              | int(11) | YES  |     | NULL    |       |
++-----------------------+---------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> DESCRIBE BOOK_ISSUE;
++---------------+---------+------+-----+---------+-------+
+| Field         | Type    | Null | Key | Default | Extra |
++---------------+---------+------+-----+---------+-------+
+| ISSUE_ID      | int(11) | NO   | PRI | NULL    |       |
+| DATE_OF_ISSUE | date    | YES  |     | NULL    |       |
+| BOOK_ID       | int(11) | YES  | MUL | NULL    |       |
+| MEMBER_ID     | int(11) | YES  | MUL | NULL    |       |
+| EXPECTED_DATE | date    | YES  |     | NULL    |       |
++---------------+---------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> ALTER TABLE AUTHOR MODIFY PH_NO VARCHAR(20);
+Query OK, 0 rows affected (0.65 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC AUTHOR;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| AUTHOR_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME      | varchar(20) | YES  |     | NULL    |       |
+| EMAIL     | varchar(20) | YES  |     | NULL    |       |
+| PH_NO     | varchar(20) | YES  |     | NULL    |       |
+| STATUS    | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO  LANGUAGE VALUES (123,'SATHEESH');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM LANGUAGE;
++---------+----------+
+| LANG_ID | NAME     |
++---------+----------+
+|     123 | SATHEESH |
++---------+----------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE LANGUAGE MODIFY NAME CHAR(10);
+Query OK, 1 row affected (0.58 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> DESCRIBE LANGUAGE;
++---------+----------+------+-----+---------+-------+
+| Field   | Type     | Null | Key | Default | Extra |
++---------+----------+------+-----+---------+-------+
+| LANG_ID | int(11)  | NO   | PRI | NULL    |       |
+| NAME    | char(10) | YES  |     | NULL    |       |
++---------+----------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
