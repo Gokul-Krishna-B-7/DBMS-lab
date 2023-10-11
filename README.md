@@ -1,1 +1,1 @@
-# ss-lab
+# DBMS-lab
