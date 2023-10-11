@@ -1,0 +1,1654 @@
+s5c17@CC2-31:~$ mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+s5c17@CC2-31:~$ mysql -u s5c17@localhost -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.7.33-0ubuntu0.16.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> clear
+mysql> describe library;
+ERROR 1046 (3D000): No database selected
+mysql> DESCRIBE LIBRARY;
+ERROR 1046 (3D000): No database selected
+mysql> USE LIBRARY
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> DESCRIBE LIBRARY;
+ERROR 1146 (42S02): Table 'LIBRARY.LIBRARY' doesn't exist
+mysql> DESCRIBE PUBLISHER;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| PUBLISHER_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME         | varchar(20) | YES  |     | NULL    |       |
+| ADDRESS      | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE AUTHOR
+    -> DESCRIBE AUTHOR;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DESCRIBE AUTHOR' at line 2
+mysql> DESCRIBE AUTHOR;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| AUTHOR_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME      | varchar(20) | YES  |     | NULL    |       |
+| EMAIL     | varchar(20) | YES  |     | NULL    |       |
+| PH_NO     | varchar(20) | YES  |     | NULL    |       |
+| STATUS    | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> GRANT SELECT ON AUTHOR TO mca22;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT SELECT ON AUTHOR TO mca22;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT SELECT ON AUTHOR TO 's5d50@localhost';
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT SELECT ON AUTHOR.NAME TO 's5d50@localhost';
+ERROR 1146 (42S02): Table 'AUTHOR.NAME' doesn't exist
+mysql> GRANT SELECT ONLY LIBRARY.AUTHOR TO 's5d50@localhost';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ONLY LIBRARY.AUTHOR TO 's5d50@localhost'' at line 1
+mysql> GRANT SELECT ON LIBRARY.AUTHOR TO 's5d50@localhost';
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> USE LIBRARY;
+Database changed
+mysql> GRANT SELECT ON AUTHOR TO 's5d50@localhost';
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> SHOW GRANTS FOR s5d50@localhost;
+ERROR 1141 (42000): There is no such grant defined for user 's5d50' on host 'localhost'
+mysql> USE LIBRARY;
+Database changed
+mysql> SHOW TABLES;
++-------------------+
+| Tables_in_LIBRARY |
++-------------------+
+| AUTHOR            |
+| BOOK              |
+| BOOK_AUTHOR       |
+| BOOK_ISSUE        |
+| BOOK_RETURN       |
+| LANGUAGE          |
+| LATE_FEE_RULE     |
+| MEMBER            |
+| PUBLISHER         |
++-------------------+
+9 rows in set (0.00 sec)
+
+mysql> GRANT ALL ON AUTHOR.* T0 'PERMISSION'@'LOCALHOST';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'T0 'PERMISSION'@'LOCALHOST'' at line 1
+mysql> GRANT ALL ON AUTHOR.* T0 'PERMISSION'@'localhost';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'T0 'PERMISSION'@'localhost'' at line 1
+mysql> GRANT ALL ON AUTHOR.* T0 's5d50@localhost';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'T0 's5d50@localhost'' at line 1
+mysql> GRANT ALL ON LIBRARY.* T0 's5d50@localhost';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'T0 's5d50@localhost'' at line 1
+mysql> GRANT SELECT ON LIBRARY.* T0 's5d50@localhost';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'T0 's5d50@localhost'' at line 1
+mysql> GRANT ALL ON LIBRARY.* TO TONY;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT ALL ON AUTHOR.* TO TONY;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT ALL ON AUTHOR TO TONY;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT ALL ON AUTHO.* TO TONY;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT ALL ON AUTHOR.* TO TONY;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT ALL ON AUTHOR.* TO TONY;
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'tokien'@'%';
+ERROR 1133 (42000): Can't find any matching row in the user table
+mysql> CREATE USER 'TEST' IDENTIFIED BY 'PASSWORD';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT SELECT ON LANGUAGE TO 'TEST';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW GRANTS FOR TEST;
++----------------------------------------------------+
+| Grants for TEST@%                                  |
++----------------------------------------------------+
+| GRANT USAGE ON *.* TO 'TEST'@'%'                   |
+| GRANT SELECT ON `LIBRARY`.`LANGUAGE` TO 'TEST'@'%' |
++----------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> GRANT INSERT ON AUTHOR TO 'TEST';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW GRANTS FOR TEST;
++----------------------------------------------------+
+| Grants for TEST@%                                  |
++----------------------------------------------------+
+| GRANT USAGE ON *.* TO 'TEST'@'%'                   |
+| GRANT SELECT ON `LIBRARY`.`LANGUAGE` TO 'TEST'@'%' |
+| GRANT INSERT ON `LIBRARY`.`AUTHOR` TO 'TEST'@'%'   |
++----------------------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> REVOKE INSERT ON AUTHOR FROM 'TEST';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW GRANTS FOR TEST;
++----------------------------------------------------+
+| Grants for TEST@%                                  |
++----------------------------------------------------+
+| GRANT USAGE ON *.* TO 'TEST'@'%'                   |
+| GRANT SELECT ON `LIBRARY`.`LANGUAGE` TO 'TEST'@'%' |
++----------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> SHOW AUTHOR;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AUTHOR' at line 1
+mysql> DESC AUTHOR;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| AUTHOR_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME      | varchar(20) | YES  |     | NULL    |       |
+| EMAIL     | varchar(20) | YES  |     | NULL    |       |
+| PH_NO     | varchar(20) | YES  |     | NULL    |       |
+| STATUS    | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO AUTHOR VALUES (123,'ATHUL','ATH@GMAIL.COM','95449587','ACTIVE');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> SHOW AUTHOR;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AUTHOR' at line 1
+mysql> DESC AUTHOR;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| AUTHOR_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME      | varchar(20) | YES  |     | NULL    |       |
+| EMAIL     | varchar(20) | YES  |     | NULL    |       |
+| PH_NO     | varchar(20) | YES  |     | NULL    |       |
+| STATUS    | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *FROM AUTHOR;
++-----------+-------+---------------+----------+--------+
+| AUTHOR_ID | NAME  | EMAIL         | PH_NO    | STATUS |
++-----------+-------+---------------+----------+--------+
+|       123 | ATHUL | ATH@GMAIL.COM | 95449587 | ACTIVE |
++-----------+-------+---------------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> SHOW TABLES;
++-------------------+
+| Tables_in_LIBRARY |
++-------------------+
+| AUTHOR            |
+| BOOK              |
+| BOOK_AUTHOR       |
+| BOOK_ISSUE        |
+| BOOK_RETURN       |
+| LANGUAGE          |
+| LATE_FEE_RULE     |
+| MEMBER            |
+| PUBLISHER         |
++-------------------+
+9 rows in set (0.00 sec)
+
+mysql> SHOE BOOOK;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SHOE BOOOK' at line 1
+mysql> DESCRIBE BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql>  CREATE INDEX SAMPLE_INDEX ON BOOK_ISSUE (ISSUE_ID);
+Query OK, 0 rows affected (0.31 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC BOOK_ISSUE;
++---------------+---------+------+-----+---------+-------+
+| Field         | Type    | Null | Key | Default | Extra |
++---------------+---------+------+-----+---------+-------+
+| ISSUE_ID      | int(11) | NO   | PRI | NULL    |       |
+| DATE_OF_ISSUE | date    | YES  |     | NULL    |       |
+| BOOK_ID       | int(11) | YES  | MUL | NULL    |       |
+| MEMBER_ID     | int(11) | YES  | MUL | NULL    |       |
+| EXPECTED_DATE | date    | YES  |     | NULL    |       |
++---------------+---------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> DESC BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO BOOK VALUES (9876,"ROME EMPIRE",78,780,76543,mysql> INSERT INTO BOOK VALUES (9876,"ROME EMPIRE",78,780,76543,2)         mysql> INSERT INTO BOOK VALUES (9876,"ROME EMPIRE",78,780,7657,2003-08-10,3,"ACTIVE");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"ACTIVE")' at line 1
+mysql> INSERT INTO BOOK VALUES (9876,"ROME EMPIRE",78,780,7657,20,"ACTIVE");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO BOOK VALUES (9876,"ROME EMPIRE",78,780,7657,2004-08-10,3,"ACTIVE");
+ERROR 1292 (22007): Incorrect date value: '1986' for column 'PUBLISHED_DATE' at row 1
+mysql> INSERT INTO BOOK VALUES (9876,"ROME EMPIRE",78,780,7657,24-08-10,3,"ACTIVE");
+ERROR 1292 (22007): Incorrect date value: '6' for column 'PUBLISHED_DATE' at row 1
+mysql> INSERT INTO BOOK VALUES (9876,"ROME EMPIRE",78,780,7657,"24-08-10",3,"ACTIVE");
+Query OK, 1 row affected (0.10 sec)
+
+mysql> SELECT * FROM BOOK;
++---------+-------------+-------------+------+--------------+----------------+--------+--------+
+| BOOK_ID | TITLE       | LANGUAGE_ID | MRP  | PUBLISHER_ID | PUBLISHED_DATE | VOLUME | STATUS |
++---------+-------------+-------------+------+--------------+----------------+--------+--------+
+|    9876 | ROME EMPIRE |          78 |  780 |         7657 | 2024-08-10     |      3 | ACTIVE |
++---------+-------------+-------------+------+--------------+----------------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO BOOK VALUES (6876,"TITANIC",48,1000,5657,"2004-08-10",3,"OCCUPIED");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM BOOK;
++---------+-------------+-------------+------+--------------+----------------+--------+----------+
+| BOOK_ID | TITLE       | LANGUAGE_ID | MRP  | PUBLISHER_ID | PUBLISHED_DATE | VOLUME | STATUS   |
++---------+-------------+-------------+------+--------------+----------------+--------+----------+
+|    6876 | TITANIC     |          48 | 1000 |         5657 | 2004-08-10     |      3 | OCCUPIED |
+|    9876 | ROME EMPIRE |          78 |  780 |         7657 | 2024-08-10     |      3 | ACTIVE   |
++---------+-------------+-------------+------+--------------+----------------+--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM AUTHOR;
++-----------+-------+---------------+----------+--------+
+| AUTHOR_ID | NAME  | EMAIL         | PH_NO    | STATUS |
++-----------+-------+---------------+----------+--------+
+|       123 | ATHUL | ATH@GMAIL.COM | 95449587 | ACTIVE |
++-----------+-------+---------------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM BOOK_ISSUE;
+Empty set (0.00 sec)
+
+mysql> DESC BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> DESC BOOK_ISSUE;
++---------------+---------+------+-----+---------+-------+
+| Field         | Type    | Null | Key | Default | Extra |
++---------------+---------+------+-----+---------+-------+
+| ISSUE_ID      | int(11) | NO   | PRI | NULL    |       |
+| DATE_OF_ISSUE | date    | YES  |     | NULL    |       |
+| BOOK_ID       | int(11) | YES  | MUL | NULL    |       |
+| MEMBER_ID     | int(11) | YES  | MUL | NULL    |       |
+| EXPECTED_DATE | date    | YES  |     | NULL    |       |
++---------------+---------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO BOOK_ISSUE VALUES (56,'2022-10-13',45,7869,'2022-10-23');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM BOOK_ISSUE;
++----------+---------------+---------+-----------+---------------+
+| ISSUE_ID | DATE_OF_ISSUE | BOOK_ID | MEMBER_ID | EXPECTED_DATE |
++----------+---------------+---------+-----------+---------------+
+|       56 | 2022-10-13    |      45 |      7869 | 2022-10-23    |
++----------+---------------+---------+-----------+---------------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO BOOK_AUTHOR VALUES (45,34);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> SELECT * FROM BOOK_AUTHOR;
++---------+-----------+
+| BOOK_ID | AUTHOR_ID |
++---------+-----------+
+|      45 |        34 |
++---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM AUTHOR;
++-----------+-------+---------------+----------+--------+
+| AUTHOR_ID | NAME  | EMAIL         | PH_NO    | STATUS |
++-----------+-------+---------------+----------+--------+
+|       123 | ATHUL | ATH@GMAIL.COM | 95449587 | ACTIVE |
++-----------+-------+---------------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO BOOK_AUTHOR VALUES (49,123);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM BOOK_AUTHOR;
++---------+-----------+
+| BOOK_ID | AUTHOR_ID |
++---------+-----------+
+|      45 |        34 |
+|      49 |       123 |
++---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM MEMBER;
+Empty set (0.03 sec)
+
+mysql> DESC MEMBER;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| MEMBER_ID    | int(11)     | NO   | PRI | NULL    |       |
+| NAME         | varchar(20) | YES  |     | NULL    |       |
+| BRANCH_CODE  | int(11)     | YES  |     | NULL    |       |
+| ROLL_NO      | int(11)     | YES  |     | NULL    |       |
+| EMAIL        | varchar(40) | YES  |     | NULL    |       |
+| DATE_OF_JOIN | date        | YES  |     | NULL    |       |
+| STATUS       | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT INTO MEMBER VALUES (34,"SATHEESH",345,768,'1248@GMAIL.COM','2005-09-30','NO DUE');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM MEMBER;
++-----------+----------+-------------+---------+----------------+--------------+--------+
+| MEMBER_ID | NAME     | BRANCH_CODE | ROLL_NO | EMAIL          | DATE_OF_JOIN | STATUS |
++-----------+----------+-------------+---------+----------------+--------------+--------+
+|        34 | SATHEESH |         345 |     768 | 1248@GMAIL.COM | 2005-09-30   | NO DUE |
++-----------+----------+-------------+---------+----------------+--------------+--------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO MEMBER VALUES (56,"ARAVIND",98,4567,'ARV@GMAIL.COM','2006-08-24','DUE:7/-');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM MEMBER;
++-----------+----------+-------------+---------+----------------+--------------+---------+
+| MEMBER_ID | NAME     | BRANCH_CODE | ROLL_NO | EMAIL          | DATE_OF_JOIN | STATUS  |
++-----------+----------+-------------+---------+----------------+--------------+---------+
+|        34 | SATHEESH |         345 |     768 | 1248@GMAIL.COM | 2005-09-30   | NO DUE  |
+|        56 | ARAVIND  |          98 |    4567 | ARV@GMAIL.COM  | 2006-08-24   | DUE:7/- |
++-----------+----------+-------------+---------+----------------+--------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM BOOK_ISSUE;
++----------+---------------+---------+-----------+---------------+
+| ISSUE_ID | DATE_OF_ISSUE | BOOK_ID | MEMBER_ID | EXPECTED_DATE |
++----------+---------------+---------+-----------+---------------+
+|       56 | 2022-10-13    |      45 |      7869 | 2022-10-23    |
++----------+---------------+---------+-----------+---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM BOOK_RETURN;
+Empty set (0.03 sec)
+
+mysql> INSERT INTO TABLE BOOK_RETURN VALUES (89,'2022-10-23',6,6\-);
+ERROR: 
+Unknown command '\-'.
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TABLE BOOK_RETURN VALUES (89,'2022-10-23',6,6\-)' at line 1
+mysql> INSERT INTO TABLE BOOK_RETURN VALUES (89,'2022-10-23',6,6);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TABLE BOOK_RETURN VALUES (89,'2022-10-23',6,6)' at line 1
+mysql> INSERT INTO BOOK_RETURN VALUES (89,'2022-10-23',6,6);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM BOOK_ISSUE;
++----------+---------------+---------+-----------+---------------+
+| ISSUE_ID | DATE_OF_ISSUE | BOOK_ID | MEMBER_ID | EXPECTED_DATE |
++----------+---------------+---------+-----------+---------------+
+|       56 | 2022-10-13    |      45 |      7869 | 2022-10-23    |
++----------+---------------+---------+-----------+---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM BOOK_RETURN;
++----------+-----------------------+-----------+----------+
+| ISSUE_ID | ACTUAL_DATE_OF_RETURN | LATE_DAYS | LATE_FEE |
++----------+-----------------------+-----------+----------+
+|       89 | 2022-10-23            |         6 |        6 |
++----------+-----------------------+-----------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM PUBLISHER;
+Empty set (0.02 sec)
+
+mysql> INSERT INTO PUBLISHER VALUES (6778,'DARWIN','HOUSENO 14,ENGLAND');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM PUBLISHER;
++--------------+--------+--------------------+
+| PUBLISHER_ID | NAME   | ADDRESS            |
++--------------+--------+--------------------+
+|         6778 | DARWIN | HOUSENO 14,ENGLAND |
++--------------+--------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM LANGUAGE;
++---------+----------+
+| LANG_ID | NAME     |
++---------+----------+
+|     123 | SATHEESH |
++---------+----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT * FROM LATE_FEE_RULE;
+Empty set (0.01 sec)
+
+mysql> DESC LATE_FEE_RULE;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| FROM_DAYS | int(11) | NO   | PRI | NULL    |       |
+| TO_DAYS   | int(11) | NO   | PRI | NULL    |       |
+| AMOUNT    | int(11) | NO   | PRI | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO LATE_FEE_RULE VALUES (2,67,678);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> DESC BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> DESC PUBLISHER;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| PUBLISHER_ID | int(11)     | NO   | PRI | NULL    |       |
+| NAME         | varchar(20) | YES  |     | NULL    |       |
+| ADDRESS      | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESC LANGUAGE;
++---------+----------+------+-----+---------+-------+
+| Field   | Type     | Null | Key | Default | Extra |
++---------+----------+------+-----+---------+-------+
+| LANG_ID | int(11)  | NO   | PRI | NULL    |       |
+| NAME    | char(10) | YES  |     | NULL    |       |
++---------+----------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM LATE_FEE_RULE;
++-----------+---------+--------+
+| FROM_DAYS | TO_DAYS | AMOUNT |
++-----------+---------+--------+
+|         2 |      67 |    678 |
++-----------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> DESC BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM LIBRARY;
+ERROR 1146 (42S02): Table 'LIBRARY.LIBRARY' doesn't exist
+mysql> DESC BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> mysqlimport -u s5c17 -p --local LIBRARY /home/s5c17/Downloads
+    -> ^C
+mysql> mysqlimport -u s5c17 -p --local LIBRARY /home/s5c17/Downloads
+    -> ^C
+mysql> mysqlimport -u s5c17 -p --local LIBRARY /home/s5c17/Downloads/MOCK_DATA.csv
+    -> ^C
+mysql> mysqlimport -u s5c17 -p --local LIBRARY /home/s5c17/Downloads/MOCK_DATA.csv;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysqlimport -u s5c17 -p --local LIBRARY /home/s5c17/Downloads/MOCK_DATA.csv' at line 1
+mysql> mysqlimport -u s5c17@localhost -p --local LIBRARY /home/s5c17/Downloads/MOCK_DATA.csv;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysqlimport -u s5c17@localhost -p --local LIBRARY /home/s5c17/Downloads/MOCK_DAT' at line 1
+mysql> SHOW INDEX ON BOOK_ISSUE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ON BOOK_ISSUE' at line 1
+mysql> SHOW INDEX FROM BOOK_ISSUE;
++------------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table      | Non_unique | Key_name     | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++------------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| BOOK_ISSUE |          0 | PRIMARY      |            1 | ISSUE_ID    | A         |           1 |     NULL | NULL   |      | BTREE      |         |               |
+| BOOK_ISSUE |          1 | BOOK_ID      |            1 | BOOK_ID     | A         |           1 |     NULL | NULL   | YES  | BTREE      |         |               |
+| BOOK_ISSUE |          1 | MEMBER_ID    |            1 | MEMBER_ID   | A         |           1 |     NULL | NULL   | YES  | BTREE      |         |               |
+| BOOK_ISSUE |          1 | SAMPLE_INDEX |            1 | ISSUE_ID    | A         |           1 |     NULL | NULL   |      | BTREE      |         |               |
++------------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE INDEX S_INDEX ON BOOK_ISSUE(MEMBER_ID,BOOK_ID);
+Query OK, 0 rows affected (0.26 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW INDEX FROM BOOK_ISSUE;
++------------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table      | Non_unique | Key_name     | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++------------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| BOOK_ISSUE |          0 | PRIMARY      |            1 | ISSUE_ID    | A         |           1 |     NULL | NULL   |      | BTREE      |         |               |
+| BOOK_ISSUE |          1 | BOOK_ID      |            1 | BOOK_ID     | A         |           1 |     NULL | NULL   | YES  | BTREE      |         |               |
+| BOOK_ISSUE |          1 | SAMPLE_INDEX |            1 | ISSUE_ID    | A         |           1 |     NULL | NULL   |      | BTREE      |         |               |
+| BOOK_ISSUE |          1 | S_INDEX      |            1 | MEMBER_ID   | A         |           1 |     NULL | NULL   | YES  | BTREE      |         |               |
+| BOOK_ISSUE |          1 | S_INDEX      |            2 | BOOK_ID     | A         |           1 |     NULL | NULL   | YES  | BTREE      |         |               |
++------------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> DESC BOOK;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BOOK_ID        | int(11)     | NO   | PRI | NULL    |       |
+| TITLE          | varchar(40) | YES  |     | NULL    |       |
+| LANGUAGE_ID    | int(11)     | YES  | MUL | NULL    |       |
+| MRP            | bigint(20)  | YES  |     | NULL    |       |
+| PUBLISHER_ID   | int(11)     | YES  | MUL | NULL    |       |
+| PUBLISHED_DATE | date        | YES  |     | NULL    |       |
+| VOLUME         | int(11)     | YES  |     | NULL    |       |
+| STATUS         | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/Sample.csv'
+    -> INTO TABLE Example
+    -> FIELDS TERMINATED BY ','
+    -> ENCLOSED BY '"' LINES
+    -> TERMINATED BY '\n'
+    -> (Num, Name, Salary, Place);^C
+mysql> LOAD DATA INFLE '/home/s5c17/Downloads/MOCK_DATA(1).csv'
+    -> INTO TABLE BOOK
+    -> FIELDS TERMINATED BY ','
+    -> TERMINATED BY '\n'
+    -> (BOOK_ID,TITLE,LANGUAGE_ID,MRP ,PUBLISHER_ID,PUBLISHED_DATE,VOLUME,STATUS);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INFLE '/home/s5c17/Downloads/MOCK_DATA(1).csv'
+INTO TABLE BOOK
+FIELDS TERMINATED' at line 1
+mysql> LOAD DATA LOCAL INFLE '/home/s5c17/Downloads/MOCK_DATA(1).csv' INTO TABLE BOOK FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INFLE '/home/s5c17/Downloads/MOCK_DATA(1).csv' INTO TABLE BOOK FIELDS TERMINATED' at line 1
+mysql> LOAD DATA LOCAL INFILE '/home/s5c17/Downloads/MOCK_DATA(1).csv' INTO TABLE BOOK FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n';
+Query OK, 956 rows affected, 1155 warnings (0.35 sec)
+Records: 1001  Deleted: 0  Skipped: 45  Warnings: 1155
+
+mysql> SELECT * FROM BOOK;
++---------+----------------------------------------------+-------------+------+--------------+----------------+--------+--------------+
+| BOOK_ID | TITLE                                        | LANGUAGE_ID | MRP  | PUBLISHER_ID | PUBLISHED_DATE | VOLUME | STATUS       |
++---------+----------------------------------------------+-------------+------+--------------+----------------+--------+--------------+
+|       0 | TITLE                                        |           0 |    0 |            0 | 0000-00-00     |      0 | STATUS       |
+|      11 | "Sunchaser                                   |           0 | 8421 |           87 | 0000-00-00     |   2023 | 9            |
+|      13 | "Feast at Midnight                           |           0 | 5067 |           47 | 0000-00-00     |   2023 | 3            |
+|      39 | What About Dick?                             |        5574 |   40 |         2816 | 2023-09-30     |      0 | out of stock |
+|      46 | Raising Cain                                 |        3322 |    5 |         4127 | 2022-10-12     |      1 | out of stock |
+|      54 | Unstoppable                                  |        1131 |   93 |         8318 | 2023-08-26     |      4 | unavailable  |
+|      60 | Northern Soul                                |        9978 |   14 |         7428 | 2022-10-30     |      6 | in stock     |
+|      66 | First Strike                                 |        6311 |   59 |         2386 | 2023-01-26     |      9 | unavailable  |
+|      68 | Whitecoats                                   |        3614 |    2 |         8632 | 2022-11-20     |      7 | available    |
+|      76 | Rambo (Rambo 4)                              |        4205 |   45 |         2899 | 2023-02-03     |      9 | out of stock |
+|      95 | "New One-Armed Swordsman                     |           0 | 8289 |           10 | 0000-00-00     |   2023 | 1            |
+|     117 | "Hitch Hikers Guide to the Galaxy            |           0 | 8406 |           52 | 0000-00-00     |   2023 | 3            |
+|     118 | Johnny Mnemonic                              |        8760 |    8 |         5195 | 2023-06-14     |      0 | available    |
+|     122 | Freedomfighters (Libertarias)                |        2935 |   78 |         1214 | 2023-05-10     |      7 | in stock     |
+|     129 | "Liability                                   |           0 | 1907 |           78 | 0000-00-00     |   2023 | 3            |
+|     153 | "Unidentified Flying Oddball (a.k.a. Spa     |           0 |    0 |         3417 | 0000-00-00     |   3265 | 2023-08-16   |
+|     171 | EyjafjallajÃ¶kull                            |        7908 |   82 |         5542 | 2023-04-09     |      8 | out of stock |
+|     173 | When Night Is Falling                        |        5889 |   41 |         8598 | 2022-11-08     |      7 | in stock     |
+|     187 | "Streetcar Named Desire                      |           0 | 6015 |           21 | 0000-00-00     |   2023 | 2            |
+|     193 | Expelled from Paradise                       |        5471 |    2 |         2289 | 2023-02-01     |      1 | available    |
+|     195 | Liam                                         |        4684 |   62 |         1987 | 2023-02-28     |      8 | in stock     |
+|     198 | Next of Kin                                  |        4147 |   64 |         5971 | 2023-09-11     |      1 | available    |
+|     217 | Tokyo Joe                                    |        1871 |   95 |         7097 | 2023-07-29     |      6 | out of stock |
+|     229 | History Is Made at Night                     |        8812 |   52 |         5534 | 2022-12-01     |      0 | unavailable  |
+|     240 | "Man from Beyond                             |           0 |  844 |           23 | 0000-00-00     |   2023 | 0            |
+|     263 | "Pruitt-Igoe Myth                            |           0 | 6187 |           63 | 0000-00-00     |   2023 | 0            |
+|     269 | "Queen                                       |           0 | 3621 |           32 | 0000-00-00     |   2023 | 6            |
+|     274 | "Strange Case of Dr. Jekyll and Miss Osb     |           0 | 5689 |           63 | 0000-00-00     |   2023 | 4            |
+|     294 | Far from Home                                |        6989 |   18 |         4599 | 2023-08-29     |      1 | unavailable  |
+|     312 | Elf                                          |        7564 |   37 |         5605 | 2023-03-09     |      5 | available    |
+|     319 | Dinner Rush                                  |        9363 |   79 |         3142 | 2023-03-05     |      8 | unavailable  |
+|     320 | In My Skin (Dans ma Peau)                    |        2669 |   98 |         9253 | 2023-01-14     |      1 | in stock     |
+|     322 | Poolsite                                     |        3660 |   79 |         9150 | 2023-04-21     |      6 | out of stock |
+|     329 | Hangmen Also Die                             |         963 |    1 |         6691 | 2023-06-30     |      0 | unavailable  |
+|     339 | "Tribe                                       |           0 | 6108 |           48 | 0000-00-00     |   2023 | 1            |
+|     365 | Dr. Otto and the Riddle of the Gloom Bea     |        2243 |   35 |         5741 | 2023-07-20     |      4 | in stock     |
+|     382 | "Rainmaker                                   |           0 | 3511 |           73 | 0000-00-00     |   2022 | 1            |
+|     384 | Peter Ibbetson                               |         781 |   58 |         4721 | 2023-02-13     |      1 | unavailable  |
+|     390 | Amityville II: The Possession                |        7637 |   47 |         4459 | 2023-03-16     |      4 | out of stock |
+|     403 | NausicaÃ¤ of the Valley of the Wind (Kaz     |        4536 |   82 |         2183 | 2023-01-24     |      6 | out of stock |
+|     418 | HallÃ¥hallÃ¥                                 |        9689 |   68 |         7098 | 2022-11-05     |      8 | out of stock |
+|     423 | "Late Great Planet Earth                     |           0 | 4029 |           47 | 0000-00-00     |   2023 | 0            |
+|     439 | Admiral                                      |        4967 |   62 |          533 | 2023-03-22     |      4 | unavailable  |
+|     446 | My Favorite Brunette                         |        8960 |   67 |         8002 | 2023-01-26     |      1 | unavailable  |
+|     447 | "Notorious Landlady                          |           0 | 1919 |           31 | 0000-00-00     |   2023 | 6            |
+|     471 | Ghost in the Shell 2: Innocence (a.k.a.      |        5892 |   32 |         5843 | 2023-06-03     |      5 | out of stock |
+|     476 | Mr Reliable                                  |        7838 |   42 |         1182 | 2023-01-21     |      7 | out of stock |
+|     484 | "Grand Amour                                 |           0 | 1270 |           19 | 0000-00-00     |   2022 | 4            |
+|     513 | Tomcats                                      |        1646 |   71 |         4809 | 2023-05-20     |      6 | available    |
+|     531 | "African Queen                               |           0 | 7551 |           60 | 0000-00-00     |   2023 | 5            |
+|     534 | "Thing                                       |           0 | 1617 |           61 | 0000-00-00     |   2022 | 6            |
+|     547 | Iceman                                       |          45 |   59 |         2694 | 2023-03-13     |      9 | out of stock |
+|     562 | Do We Really Need the Moon?                  |        2990 |   65 |         4143 | 2023-06-15     |      5 | available    |
+|     578 | "Woman in The Septic Tank                    |           0 |  602 |           75 | 0000-00-00     |   2023 | 0            |
+|     593 | "Loss of Sexual Innocence                    |           0 | 3636 |           27 | 0000-00-00     |   2022 | 7            |
+|     601 | War Dance                                    |        3933 |   85 |         4316 | 2022-10-29     |      8 | unavailable  |
+|     603 | "King Is Dancing                             |           0 |  136 |           98 | 0000-00-00     |   2023 | 0            |
+|     611 | "McCullochs                                  |           0 | 3017 |           52 | 0000-00-00     |   2023 | 8            |
+|     631 | Bananaz                                      |        2256 |   66 |         3336 | 2022-11-01     |      8 | unavailable  |
+|     641 | Godzilla (Gojira)                            |        5356 |   12 |         4069 | 2023-02-22     |      3 | in stock     |
+|     674 | Madonna's Pig                                |        2126 |   22 |         9232 | 2023-01-01     |      6 | available    |
+|     698 | "Secret of the Grain                         |           0 | 4751 |           50 | 0000-00-00     |   2023 | 7            |
+|     704 | Aelita: The Queen of Mars (Aelita)           |        2924 |   72 |         1613 | 2022-11-28     |      2 | available    |
+|     705 | Time and Tide (Seunlau Ngaklau)              |        7323 |   57 |         1979 | 2023-06-16     |      5 | out of stock |
+|     708 | Nobody Knows Anybody (Nadie conoce a nad     |        2550 |   94 |         8992 | 2022-12-05     |      8 | in stock     |
+|     723 | Private Romeo                                |        9619 |   99 |         3847 | 2022-11-01     |      4 | available    |
+|     725 | Shadow of the Thin Man                       |        8981 |   12 |         4769 | 2023-09-20     |      8 | unavailable  |
+|     739 | Manon                                        |         546 |   32 |         4766 | 2023-08-23     |      1 | out of stock |
+|     746 | "Crystal Ball                                |           0 | 3655 |           20 | 0000-00-00     |   2022 | 5            |
+|     747 | "King of Fighters                            |           0 | 9003 |           87 | 0000-00-00     |   2022 | 4            |
+|     765 | "Italian Job                                 |           0 | 6629 |           46 | 0000-00-00     |   2023 | 6            |
+|     768 | "Apprenticeship of Duddy Kravitz             |           0 | 3148 |           45 | 0000-00-00     |   2023 | 8            |
+|     782 | BBOY for LIFE                                |        7485 |   81 |         5514 | 2023-08-21     |      1 | available    |
+|     784 | Steamboat Willie                             |         514 |   88 |         2171 | 2023-05-29     |      1 | in stock     |
+|     793 | In Custody                                   |        2370 |   50 |         2249 | 2023-05-01     |      6 | unavailable  |
+|     812 | Hans Christian Andersen                      |        1284 |   57 |         5742 | 2023-08-16     |      6 | available    |
+|     827 | Lovely & Amazing                             |         567 |   63 |         1518 | 2023-05-23     |      0 | in stock     |
+|     847 | Grace                                        |        1286 |   73 |         3398 | 2023-06-08     |      6 | in stock     |
+|     873 | Plunkett & MaCleane                          |        3496 |   48 |         1941 | 2022-11-23     |      2 | unavailable  |
+|     877 | "Fighting Temptations                        |           0 | 7629 |           84 | 0000-00-00     |   2023 | 3            |
+|     880 | Public Sex                                   |        1386 |   75 |         5613 | 2023-06-24     |      5 | out of stock |
+|     882 | Oldboy                                       |        2801 |   57 |         7155 | 2023-07-06     |      9 | in stock     |
+|     894 | Resistance                                   |        1798 |   94 |         6808 | 2023-02-10     |      8 | out of stock |
+|     900 | Alice                                        |        9172 |   19 |         6673 | 2023-08-04     |      3 | available    |
+|     911 | Pictures of the Old World (Obrazy starÃ©     |        1813 |   28 |         2664 | 2022-12-09     |      5 | in stock     |
+|     912 | Manny & Lo                                   |        1404 |   88 |         5438 | 2023-05-03     |      2 | in stock     |
+|     917 | "Big Hit                                     |           0 | 5771 |           38 | 0000-00-00     |   2023 | 7            |
+|     953 | "Hills Have Eyes                             |           0 | 7505 |           62 | 0000-00-00     |   2023 | 3            |
+|     960 | Rock-a-Bye Baby                              |        1947 |   43 |         9451 | 2023-09-23     |      2 | out of stock |
+|     962 | "Clonus Horror                               |           0 | 1849 |            5 | 0000-00-00     |   2022 | 6            |
+|     982 | What the Day Owes the Night                  |        4492 |    3 |         3692 | 2023-09-24     |      4 | unavailable  |
+|     987 | Star Wars: Episode III - Revenge of the      |        4133 |    6 |         4920 | 2022-10-19     |      2 | available    |
+|     991 | Cats Don't Dance                             |        4540 |   11 |         2902 | 2023-08-15     |      7 | unavailable  |
+|    1006 | Fright Night Part II                         |        4900 |   70 |         6554 | 2023-08-28     |      1 | out of stock |
+|    1009 | School For Scoundrels                        |        5764 |    5 |         5951 | 2023-01-23     |      2 | in stock     |
+|    1012 | "Slingshot                                   |           0 | 5505 |            4 | 0000-00-00     |   2022 | 1            |
+|    1020 | "Midnight Clear                              |           0 | 5985 |           40 | 0000-00-00     |   2023 | 6            |
+|    1022 | Comic Book Villains                          |        7580 |   72 |         6651 | 2022-10-21     |      6 | out of stock |
+|    1029 | Burden of Dreams                             |        1345 |   63 |         5103 | 2023-05-25     |      4 | out of stock |
+|    1036 | Resident Evil: Apocalypse                    |        8070 |   62 |         8200 | 2023-02-07     |      1 | out of stock |
+|    1039 | "Princess of Montpensier                     |           0 | 4281 |           53 | 0000-00-00     |   2023 | 8            |
+|    1049 | "Dexter the Dragon & Bumble the Bear (a.     |           0 | 2587 |           89 | 0000-00-00     |   2023 | 9            |
+|    1055 | Luna de Avellaneda                           |        8592 |   30 |          458 | 2023-10-03     |      4 | in stock     |
+|    1059 | Men Cry Bullets                              |        4895 |   30 |         3482 | 2023-03-26     |      7 | out of stock |
+|    1069 | "Bank Job                                    |           0 | 6617 |            1 | 0000-00-00     |   2022 | 6            |
+|    1073 | Cheech & Chong's The Corsican Brothers       |         441 |   97 |         3507 | 2023-09-09     |      5 | unavailable  |
+|    1103 | "Love                                        |           0 |  411 |           64 | 0000-00-00     |   2022 | 4            |
+|    1123 | 100 Years of Evil                            |        8067 |   61 |         4628 | 2023-01-18     |      5 | in stock     |
+|    1133 | Go for It                                    |        3958 |   81 |         7254 | 2023-03-12     |      1 | out of stock |
+|    1141 | Stealing Harvard                             |        3161 |   47 |         7482 | 2023-07-22     |      0 | available    |
+|    1153 | "Fistful of Fingers                          |           0 | 8843 |           29 | 0000-00-00     |   2023 | 3            |
+|    1187 | I Am Curious (Blue) (Jag Ã¤r nyfiken - e     |        1002 |   64 |          476 | 2023-09-18     |      6 | out of stock |
+|    1189 | Shadow Man                                   |        9973 |   82 |         1160 | 2023-01-09     |      5 | available    |
+|    1207 | Wild River                                   |        9009 |   97 |         3049 | 2022-11-25     |      2 | in stock     |
+|    1233 | Only Angels Have Wings                       |          39 |   13 |         4415 | 2022-10-07     |      1 | in stock     |
+|    1239 | Shane                                        |        9267 |   46 |         1295 | 2023-05-17     |      9 | unavailable  |
+|    1247 | Lupin the Third: The Secret of Mamo          |        7816 |   76 |         4626 | 2022-12-31     |      5 | unavailable  |
+|    1253 | Heaven                                       |        4560 |   52 |         6048 | 2023-08-16     |      5 | in stock     |
+|    1278 | All About Steve                              |          18 |   77 |          958 | 2023-08-23     |      8 | out of stock |
+|    1280 | Charm's Incidents (Charms ZwischenfÃ¤lle     |        8313 |   47 |         2759 | 2023-01-18     |      4 | unavailable  |
+|    1282 | "Crawling Eye                                |           0 |    0 |         3352 | 0000-00-00     |   5309 | 2023-05-26   |
+|    1287 | Limbo                                        |        6636 |   51 |         8046 | 2023-05-28     |      4 | out of stock |
+|    1303 | Annie Get Your Gun                           |        7122 |   91 |         3112 | 2023-03-12     |      3 | unavailable  |
+|    1306 | "Thin Man Goes Home                          |           0 | 4995 |            1 | 0000-00-00     |   2022 | 5            |
+|    1311 | Dead or Alive: Final                         |        9056 |   60 |         4997 | 2022-12-13     |      1 | out of stock |
+|    1315 | Wild Geese II                                |         680 |   40 |         2650 | 2022-10-27     |      1 | unavailable  |
+|    1329 | Voices from the List                         |         791 |   28 |           57 | 2023-02-25     |      0 | unavailable  |
+|    1330 | Exiles (Exils)                               |        4388 |   28 |         6243 | 2023-05-20     |      4 | unavailable  |
+|    1339 | World on a Wire (Welt am Draht)              |        9921 |    3 |         9115 | 2023-06-29     |      4 | available    |
+|    1349 | Dorm Daze (National Lampoon Presents Dor     |        2634 |   57 |         8379 | 2023-05-15     |      1 | unavailable  |
+|    1359 | "Swindle                                     |           0 |    0 |         3517 | 0000-00-00     |   7135 | 2023-01-16   |
+|    1366 | "Bleeding                                    |           0 | 6981 |           79 | 0000-00-00     |   2023 | 8            |
+|    1377 | Beautiful                                    |        7630 |   84 |         1465 | 2023-07-16     |      8 | in stock     |
+|    1379 | Part of the Weekend Never Dies               |         148 |   89 |         2462 | 2023-09-25     |      8 | available    |
+|    1395 | "Cave                                        |           0 | 5104 |           71 | 0000-00-00     |   2023 | 6            |
+|    1402 | "Good Night to Die                           |           0 | 1924 |           83 | 0000-00-00     |   2023 | 8            |
+|    1403 | Tall in the Saddle                           |        5259 |   69 |         3064 | 2023-07-07     |      1 | out of stock |
+|    1409 | A Run for Your Money                         |        7394 |   64 |          287 | 2023-04-26     |      6 | out of stock |
+|    1419 | August Rush                                  |        6928 |   84 |         2781 | 2023-03-09     |      5 | available    |
+|    1427 | Fat Kid Rules the World                      |        8289 |   37 |           69 | 2023-10-03     |      7 | in stock     |
+|    1436 | Frontrunners                                 |        4486 |   95 |         7701 | 2022-11-11     |      7 | in stock     |
+|    1439 | Bloody Mama                                  |        2100 |   84 |         6636 | 2023-01-01     |      4 | out of stock |
+|    1441 | "Romulus                                     |           0 |  822 |           77 | 0000-00-00     |   2023 | 5            |
+|    1450 | Time Changer                                 |        7893 |   88 |         1439 | 2023-04-05     |      8 | in stock     |
+|    1475 | Wheels on Meals (Kuai can che)               |        4284 |   84 |         4643 | 2023-01-05     |      6 | available    |
+|    1493 | Manson                                       |        5686 |    9 |         7225 | 2022-10-16     |      5 | in stock     |
+|    1497 | Welcome Mr. Marshall (Bienvenido Mister      |        2948 |   24 |         5942 | 2023-03-01     |      5 | available    |
+|    1507 | Club Fed                                     |        7171 |   37 |         4676 | 2022-12-13     |      8 | available    |
+|    1511 | Santa Claus Has Blue Eyes (Le pÃ¨re NoÃ«     |        9578 |   12 |         4850 | 2023-04-27     |      3 | out of stock |
+|    1515 | Rat King                                     |        9456 |   69 |         2330 | 2023-02-21     |      2 | available    |
+|    1534 | At Berkeley                                  |        2039 |   64 |         1568 | 2023-07-17     |      9 | in stock     |
+|    1537 | Alien Nation: Dark Horizon                   |        2916 |   29 |          299 | 2023-04-06     |      9 | out of stock |
+|    1553 | "Boss of It All                              |           0 | 5724 |            5 | 0000-00-00     |   2023 | 4            |
+|    1566 | Doomsday Book                                |        6347 |   26 |         5211 | 2023-08-28     |      9 | out of stock |
+|    1580 | Radio Flyer                                  |        3787 |    3 |         8418 | 2023-07-08     |      2 | unavailable  |
+|    1598 | Reclaim                                      |        2108 |   45 |         4258 | 2022-11-24     |      7 | available    |
+|    1620 | "Sin of Harold Diddlebock                    |           0 |  944 |           51 | 0000-00-00     |   2023 | 8            |
+|    1623 | Cube Zero                                    |        6719 |   44 |         8061 | 2023-07-20     |      4 | unavailable  |
+|    1627 | W.C. Fields and Me                           |        4118 |   81 |         6223 | 2023-08-27     |      1 | out of stock |
+|    1638 | Dying Breed                                  |        7465 |   70 |         5556 | 2023-06-08     |      6 | unavailable  |
+|    1639 | Skenbart: En film om tÃ¥g                    |        4658 |   96 |         2141 | 2022-10-31     |      1 | in stock     |
+|    1644 | Alone for Christmas                          |        3835 |   47 |          538 | 2023-03-28     |      1 | in stock     |
+|    1645 | "Best Intentions                             |           0 | 7575 |           57 | 0000-00-00     |   2023 | 7            |
+|    1657 | Daisy Kenyon                                 |        4727 |   78 |         2244 | 2023-08-05     |      0 | available    |
+|    1658 | Cran d'arrÃªt                                |        1388 |   24 |         8359 | 2023-06-02     |      7 | unavailable  |
+|    1673 | Things We Lost in the Fire                   |        1247 |    2 |         8098 | 2023-06-10     |      7 | out of stock |
+|    1689 | May in the Summer                            |         853 |   53 |         4406 | 2023-01-24     |      7 | out of stock |
+|    1699 | Rusty Knife (Sabita naifu)                   |        9159 |   11 |         2689 | 2023-03-25     |      4 | available    |
+|    1712 | "Asphalt Jungle                              |           0 | 6827 |           87 | 0000-00-00     |   2023 | 2            |
+|    1727 | Chicago Overcoat                             |        4632 |   68 |         3330 | 2023-08-02     |      5 | unavailable  |
+|    1731 | "Passage to India                            |           0 | 2584 |           25 | 0000-00-00     |   2023 | 7            |
+|    1733 | "Year of the Wolf                            |           0 | 4865 |           59 | 0000-00-00     |   2023 | 3            |
+|    1746 | Bad Boys                                     |         431 |   89 |         1244 | 2023-03-24     |      7 | out of stock |
+|    1752 | "Bon Cop                                     |           0 | 8520 |           88 | 0000-00-00     |   2023 | 5            |
+|    1755 | "Girl From Paris                             |           0 |    0 |          598 | 0000-00-00     |   5803 | 2023-01-09   |
+|    1765 | "Student                                     |           0 |  752 |           18 | 0000-00-00     |   2023 | 2            |
+|    1786 | On Deadly Ground                             |        2130 |   84 |         3251 | 2023-01-24     |      4 | available    |
+|    1790 | Agent Red                                    |        6403 |   23 |         8537 | 2023-02-19     |      5 | unavailable  |
+|    1824 | Yes Or No                                    |        2936 |   61 |         6709 | 2022-10-15     |      5 | available    |
+|    1828 | "Chaperone                                   |           0 | 7104 |           20 | 0000-00-00     |   2023 | 8            |
+|    1829 | Bel Ami                                      |        5154 |   34 |         6589 | 2022-10-25     |      1 | out of stock |
+|    1838 | "Child                                       |           0 | 7885 |            3 | 0000-00-00     |   2022 | 1            |
+|    1841 | Born to Race                                 |        3058 |   36 |         9591 | 2023-04-13     |      8 | available    |
+|    1842 | Body Parts                                   |        2540 |   70 |         7373 | 2023-09-01     |      2 | in stock     |
+|    1860 | "Bottom of the Sea                           |           0 | 9861 |            2 | 0000-00-00     |   2022 | 6            |
+|    1892 | Citizen X                                    |        8457 |   78 |         2529 | 2022-10-10     |      1 | unavailable  |
+|    1894 | Rolling                                      |        8136 |   36 |           91 | 2023-01-22     |      2 | available    |
+|    1901 | Beloved/Friend (a.k.a. Amigo/Amado) (Ami     |        2538 |    3 |         4439 | 2022-12-10     |      4 | in stock     |
+|    1902 | Major Payne                                  |        4468 |   81 |          247 | 2022-10-19     |      8 | out of stock |
+|    1906 | Possessed (Besat)                            |        5998 |   35 |         4620 | 2023-07-12     |      6 | available    |
+|    1918 | De nieuwe Wildernis                          |        9547 |   27 |         2389 | 2023-02-07     |      0 | in stock     |
+|    1921 | Death and Cremation                          |        9445 |   90 |         4315 | 2023-02-18     |      0 | available    |
+|    1927 | Small Wonders                                |        3553 |   39 |         1182 | 2022-10-29     |      8 | unavailable  |
+|    1931 | Next of Kin                                  |        7308 |    7 |         2394 | 2023-09-03     |      4 | available    |
+|    1951 | Times and Winds (Bes vakit)                  |        7090 |   51 |          509 | 2023-07-20     |      7 | in stock     |
+|    1952 | Dead Man's Letters (Pisma myortvogo chel     |        1292 |   60 |         4866 | 2022-11-11     |      2 | unavailable  |
+|    1957 | Intentions of Murder (a.k.a. Murderous I     |        4570 |   27 |         3915 | 2023-09-20     |      8 | unavailable  |
+|    1960 | Attack from Space                            |         987 |   26 |         9807 | 2023-06-05     |      4 | available    |
+|    1967 | Hello Mary Lou: Prom Night II                |        4716 |   33 |         3202 | 2023-08-02     |      1 | unavailable  |
+|    1971 | Back to the Future Part II                   |        9475 |   97 |          160 | 2023-03-11     |      0 | out of stock |
+|    1991 | Kamikaze                                     |        3676 |   25 |         4731 | 2023-05-13     |      3 | available    |
+|    2010 | Sidekicks                                    |        4074 |   15 |         7021 | 2023-01-31     |      1 | available    |
+|    2023 | Solomon Kane                                 |        3833 |   13 |         8281 | 2023-08-30     |      2 | available    |
+|    2024 | 42nd Street                                  |        1028 |   99 |         6258 | 2023-06-29     |      6 | out of stock |
+|    2034 | "A-Team                                      |           0 | 4006 |           76 | 0000-00-00     |   2023 | 3            |
+|    2052 | Katsastus                                    |        4283 |   98 |         5036 | 2023-05-28     |      6 | unavailable  |
+|    2081 | Hillbillys in a Haunted House                |        3538 |   74 |          919 | 2023-04-04     |      4 | in stock     |
+|    2082 | Bonnie Scotland (Heroes of the Regiment)     |        2631 |   50 |         1770 | 2023-06-29     |      8 | available    |
+|    2116 | Mike's New Car                               |        9563 |    0 |         3394 | 2023-04-13     |      6 | in stock     |
+|    2124 | Devil's Doorway                              |         973 |   97 |         7891 | 2023-04-21     |      0 | available    |
+|    2128 | Doug's 1st Movie                             |        2877 |   73 |         6483 | 2023-04-30     |      6 | out of stock |
+|    2132 | Rage                                         |         625 |   74 |         7313 | 2023-06-19     |      2 | available    |
+|    2135 | Erendira                                     |        9242 |   16 |         1053 | 2022-12-16     |      6 | in stock     |
+|    2143 | Het Vonnis                                   |        1636 |   45 |         7040 | 2023-02-15     |      3 | available    |
+|    2169 | Ollie Hopnoodle's Haven of Bliss             |        8306 |   72 |         1091 | 2022-11-22     |      9 | out of stock |
+|    2184 | Farce of the Penguins                        |        3693 |   39 |          356 | 2023-03-05     |      2 | unavailable  |
+|    2186 | Griffin & Phoenix                            |        3703 |   12 |         1274 | 2023-04-21     |      0 | unavailable  |
+|    2200 | River's Edge                                 |        4608 |   60 |         7673 | 2023-03-15     |      8 | unavailable  |
+|    2207 | Clara's Heart                                |        3836 |   57 |          756 | 2023-03-29     |      2 | unavailable  |
+|    2210 | Scott Walker: 30 Century Man                 |        9467 |    2 |         3404 | 2022-12-31     |      7 | in stock     |
+|    2223 | "Bedford Incident                            |           0 | 5953 |            8 | 0000-00-00     |   2022 | 0            |
+|    2240 | Aningaaq                                     |        8655 |    4 |         3789 | 2023-01-07     |      8 | out of stock |
+|    2247 | Forever Young                                |        5400 |   83 |         7439 | 2023-05-26     |      4 | out of stock |
+|    2250 | "Virgin Spring                               |           0 | 7693 |           96 | 0000-00-00     |   2023 | 8            |
+|    2262 | Frozen                                       |        2513 |   71 |         7915 | 2023-08-03     |      9 | in stock     |
+|    2266 | Would You Rather                             |        2177 |   55 |         3468 | 2022-12-15     |      4 | available    |
+|    2300 | Life Back Then (Antoki no inochi)            |        4058 |   33 |         5462 | 2022-11-15     |      1 | out of stock |
+|    2315 | Zeus and Roxanne                             |        7099 |   60 |         2550 | 2023-07-05     |      4 | unavailable  |
+|    2326 | "Twice Upon a Yesterday (a.k.a. Man with     |           0 |  390 |           41 | 0000-00-00     |   2023 | 0            |
+|    2328 | Bank Error in Your Favour (Erreur de la      |        2747 |   63 |         3144 | 2023-03-18     |      8 | in stock     |
+|    2333 | Legend of the Black Scorpion (a.k.a. The     |        6499 |   55 |         8597 | 2023-08-29     |      1 | out of stock |
+|    2335 | Annapolis                                    |        9350 |    6 |         2111 | 2023-01-09     |      5 | unavailable  |
+|    2342 | Neverwas                                     |        2045 |   92 |         8932 | 2023-08-31     |      3 | out of stock |
+|    2355 | Beyond Therapy                               |         595 |   84 |         7408 | 2023-08-09     |      1 | available    |
+|    2369 | "Better Tomorrow III: Love and Death in      |           0 | 9267 |           72 | 0000-00-00     |   2022 | 9            |
+|    2379 | Walkabout                                    |         378 |   30 |         6861 | 2023-03-31     |      0 | unavailable  |
+|    2389 | City of Ghosts                               |        9020 |    7 |         7334 | 2022-11-26     |      5 | available    |
+|    2390 | Another Thin Man                             |        7868 |   70 |         3848 | 2023-04-06     |      3 | unavailable  |
+|    2391 | Tales from the Crypt Presents: Demon Kni     |        9408 |   90 |         2293 | 2023-04-30     |      6 | unavailable  |
+|    2405 | Crossworlds                                  |        5924 |   46 |         5269 | 2023-05-27     |      3 | available    |
+|    2437 | "Sign of the Cross                           |           0 | 5377 |           96 | 0000-00-00     |   2023 | 2            |
+|    2441 | Paz!                                         |         250 |   76 |         7723 | 2022-12-18     |      9 | available    |
+|    2452 | "Long Riders                                 |           0 | 5484 |           60 | 0000-00-00     |   2023 | 1            |
+|    2459 | Five Graves to Cairo                         |        7121 |   81 |         4789 | 2022-11-01     |      2 | available    |
+|    2461 | Vinyan                                       |        9674 |   61 |         7062 | 2023-06-26     |      9 | out of stock |
+|    2466 | "Hitman                                      |           0 | 8566 |           37 | 0000-00-00     |   2023 | 9            |
+|    2474 | "Peacemaker                                  |           0 | 5468 |           66 | 0000-00-00     |   2023 | 8            |
+|    2475 | Action Jackson                               |        6140 |   97 |         9264 | 2023-04-07     |      9 | available    |
+|    2499 | Nightbreed                                   |        6589 |   54 |         2851 | 2022-11-20     |      9 | available    |
+|    2513 | Cruel Gun Story (KenjÃ» zankoku monogata     |        9637 |   46 |         3999 | 2022-10-08     |      5 | in stock     |
+|    2528 | Bringing Out the Dead                        |         248 |   32 |         8168 | 2023-09-23     |      7 | out of stock |
+|    2539 | Moonfleet                                    |        9697 |   13 |         6415 | 2023-08-25     |      0 | out of stock |
+|    2543 | Giants and Toys (Kyojin to gangu)            |        3227 |   89 |         9915 | 2023-04-03     |      3 | in stock     |
+|    2562 | 6954 KilometriÃ¤ Kotiin                      |        1927 |   27 |         6619 | 2023-05-25     |      6 | available    |
+|    2582 | Dark Ride                                    |        7236 |   96 |         3791 | 2023-04-07     |      1 | available    |
+|    2589 | Elsewhere                                    |        3602 |   52 |         7105 | 2022-10-25     |      3 | out of stock |
+|    2602 | Tarzan                                       |        6198 |   55 |         9032 | 2023-01-23     |      2 | in stock     |
+|    2616 | "Think Fast                                  |           0 | 2663 |           91 | 0000-00-00     |   2022 | 6            |
+|    2633 | "Candidate                                   |           0 |  610 |           86 | 0000-00-00     |   2023 | 4            |
+|    2641 | Mother Carey's Chickens                      |         437 |   30 |         2029 | 2023-05-19     |      3 | out of stock |
+|    2646 | Los Marziano                                 |        1779 |   25 |         7444 | 2023-01-05     |      9 | available    |
+|    2677 | Hide Your Smiling Faces                      |        4631 |   44 |         6655 | 2023-03-23     |      1 | out of stock |
+|    2678 | The Circle                                   |         374 |   67 |         6391 | 2023-06-28     |      4 | unavailable  |
+|    2682 | PCU                                          |        4274 |   75 |         3261 | 2023-03-20     |      9 | in stock     |
+|    2684 | "Tender Hook                                 |           0 |    0 |         4470 | 0000-00-00     |    464 | 2023-06-24   |
+|    2686 | Support Your Local Sheriff!                  |        2698 |   76 |         5125 | 2023-05-16     |      0 | available    |
+|    2694 | "Turn of the Screw                           |           0 | 2641 |           57 | 0000-00-00     |   2023 | 2            |
+|    2704 | Lacombe Lucien                               |        9543 |   29 |         2071 | 2023-03-07     |      9 | unavailable  |
+|    2707 | LEGO Batman: The Movie - DC Heroes Unite     |          98 |   31 |           21 | 2023-02-08     |      3 | available    |
+|    2731 | Folies Bergere de Paris                      |        8627 |    0 |         8922 | 2022-11-15     |      3 | out of stock |
+|    2733 | Speed                                        |        5799 |   55 |         5502 | 2022-11-22     |      1 | available    |
+|    2737 | "Wackness                                    |           0 | 8148 |           91 | 0000-00-00     |   2023 | 4            |
+|    2744 | Stockholm East (Stockholm Ã–stra)            |        3356 |   32 |         6498 | 2022-11-15     |      3 | available    |
+|    2752 | Spinout                                      |        9195 |   37 |         9537 | 2023-08-06     |      2 | unavailable  |
+|    2760 | "Tillman Story                               |           0 | 8733 |            1 | 0000-00-00     |   2023 | 6            |
+|    2773 | Transformers: Dark of the Moon               |         982 |   93 |         2501 | 2023-04-03     |      9 | available    |
+|    2781 | Inglorious Bastards (Quel maledetto tren     |        7070 |   58 |          170 | 2022-10-17     |      6 | unavailable  |
+|    2787 | Up in the Wind                               |         347 |   22 |         3330 | 2023-04-23     |      3 | out of stock |
+|    2834 | Splendor in the Grass                        |        2239 |   62 |         8513 | 2023-07-10     |      1 | in stock     |
+|    2854 | Harper Valley P.T.A.                         |        8630 |   71 |         2596 | 2023-04-10     |      0 | out of stock |
+|    2859 | Identification Marks: None (Rysopis)         |        9702 |    8 |         1025 | 2023-07-21     |      2 | unavailable  |
+|    2868 | "Puppet Masters                              |           0 | 5690 |           19 | 0000-00-00     |   2023 | 8            |
+|    2877 | Howl's Moving Castle (Hauru no ugoku shi     |        5978 |   28 |         4219 | 2023-02-05     |      6 | in stock     |
+|    2883 | "Time Masters (MaÃ®tres du temps             |           0 | 9344 |           44 | 0000-00-00     |   2023 | 1            |
+|    2898 | Crazy Beautiful You                          |        9489 |   50 |           14 | 2022-12-29     |      1 | unavailable  |
+|    2905 | These Three                                  |        6408 |   56 |         2859 | 2023-01-18     |      2 | out of stock |
+|    2963 | Eternally Yours                              |        9725 |   25 |         3656 | 2023-08-10     |      8 | unavailable  |
+|    2972 | Bananaz                                      |        5631 |   48 |         9932 | 2023-06-15     |      2 | in stock     |
+|    2974 | Cet amour-lÃ                                 |         205 |   64 |         6164 | 2023-08-17     |      3 | unavailable  |
+|    2976 | Avatar                                       |        6813 |   84 |         6724 | 2023-09-05     |      8 | unavailable  |
+|    2977 | Dead Birds                                   |         716 |   36 |         4842 | 2022-11-30     |      2 | in stock     |
+|    2985 | Christmas Evil (a.k.a. You Better Watch      |        1520 |   13 |         7922 | 2022-10-26     |      7 | available    |
+|    3007 | Someday This Pain Will Be Useful to You      |        1200 |   11 |         2437 | 2023-08-01     |      5 | out of stock |
+|    3010 | "Color of Friendship                         |           0 | 4054 |           75 | 0000-00-00     |   2023 | 4            |
+|    3025 | "Invincible Iron Man                         |           0 | 4457 |            2 | 0000-00-00     |   2023 | 3            |
+|    3043 | Barton Fink                                  |        6334 |   52 |         7207 | 2023-06-20     |      6 | available    |
+|    3049 | Human Desire                                 |        7256 |   44 |         2631 | 2023-10-02     |      6 | unavailable  |
+|    3055 | Hour of the Gun                              |        4477 |   60 |         1898 | 2023-07-19     |      6 | available    |
+|    3091 | Manslaughter                                 |         936 |   51 |         2289 | 2023-09-03     |      3 | available    |
+|    3104 | Gold                                         |        7346 |    5 |         9736 | 2023-09-12     |      4 | available    |
+|    3110 | Howling III: The Marsupials                  |        7741 |   46 |         1091 | 2022-12-29     |      0 | out of stock |
+|    3116 | Road Trip: Beer Pong                         |        1969 |   39 |         2817 | 2023-07-13     |      6 | in stock     |
+|    3119 | Oranges                                      |        2109 |   36 |         9846 | 2023-09-05     |      8 | available    |
+|    3123 | Ernest Scared Stupid                         |        6832 |    9 |         3987 | 2022-10-06     |      8 | in stock     |
+|    3161 | Somebody Up There Likes Me                   |        8367 |   51 |         5736 | 2023-04-30     |      7 | available    |
+|    3180 | My Joy (Schastye moe)                        |        6176 |   92 |         9138 | 2023-04-05     |      4 | unavailable  |
+|    3183 | Red Riding: 1974                             |        2781 |    5 |         5220 | 2023-07-08     |      5 | unavailable  |
+|    3187 | B.T.K.                                       |        7690 |   47 |         6900 | 2023-03-04     |      3 | out of stock |
+|    3196 | "Joyriders                                   |           0 | 7376 |           80 | 0000-00-00     |   2023 | 1            |
+|    3201 | "Queen of Spades                             |           0 | 4975 |           60 | 0000-00-00     |   2022 | 0            |
+|    3227 | Hidden (a.k.a. Cache) (CachÃ©)               |        5990 |   34 |         4040 | 2023-02-01     |      5 | out of stock |
+|    3256 | Winchester '73                               |        3208 |   74 |         6949 | 2023-08-04     |      1 | available    |
+|    3259 | Art & Copy                                   |        9572 |   24 |         4357 | 2023-09-11     |      4 | out of stock |
+|    3264 | Barbie: A Perfect Christmas                  |        6177 |   44 |         4831 | 2023-01-30     |      1 | out of stock |
+|    3268 | The Devil and the Holy Water                 |        3317 |   97 |         8045 | 2023-06-15     |      1 | available    |
+|    3269 | Welcome to the Punch                         |         627 |   79 |         9178 | 2023-06-10     |      1 | in stock     |
+|    3274 | Revolt in the Fifth Dimension                |        7587 |   21 |         1466 | 2023-03-23     |      0 | out of stock |
+|    3298 | Lettera Amorosa                              |        9163 |   97 |         3967 | 2023-05-10     |      0 | in stock     |
+|    3309 | Kicking and Screaming                        |        4226 |   17 |         6521 | 2023-07-06     |      7 | available    |
+|    3315 | A Spell to Ward Off the Darkness             |        8460 |   14 |         8257 | 2022-11-29     |      7 | in stock     |
+|    3332 | Housebound                                   |        6441 |   75 |         9676 | 2023-08-16     |      5 | out of stock |
+|    3351 | White Sands                                  |        8255 |   73 |         3404 | 2022-11-11     |      9 | out of stock |
+|    3358 | White Christmas                              |         885 |   63 |         6559 | 2022-11-01     |      6 | in stock     |
+|    3365 | "Magic Christian                             |           0 | 9668 |           35 | 0000-00-00     |   2023 | 9            |
+|    3410 | "Laterna                                     |           0 | 7482 |            9 | 0000-00-00     |   2023 | 6            |
+|    3448 | "Player's Club                               |           0 | 9180 |           40 | 0000-00-00     |   2022 | 1            |
+|    3452 | Background to Danger                         |         760 |   97 |         4988 | 2022-12-02     |      2 | in stock     |
+|    3462 | "Snows of Kilimanjaro                        |           0 | 9025 |            7 | 0000-00-00     |   2023 | 1            |
+|    3463 | WWII IN HD                                   |        3775 |   15 |         6350 | 2023-01-12     |      7 | unavailable  |
+|    3488 | The Hire: Hostage                            |        1244 |   39 |          175 | 2023-01-05     |      2 | available    |
+|    3489 | Kajaki                                       |        7953 |   74 |          228 | 2023-06-27     |      5 | available    |
+|    3494 | Moonfleet                                    |        4186 |   12 |         8635 | 2022-10-14     |      3 | in stock     |
+|    3510 | The Oscar                                    |         406 |   32 |         2963 | 2023-02-12     |      9 | out of stock |
+|    3512 | "Moment of Innocence                         |           0 | 3346 |           20 | 0000-00-00     |   2023 | 3            |
+|    3548 | Zero Motivation (Efes beyahasei enosh)       |        9802 |   50 |         2399 | 2023-02-26     |      8 | in stock     |
+|    3549 | Two Thousand Maniacs!                        |        7857 |   90 |         4527 | 2023-08-22     |      3 | in stock     |
+|    3555 | Gimme the Loot                               |        8441 |   99 |         6122 | 2023-06-14     |      7 | in stock     |
+|    3577 | Russendisko                                  |        5225 |   55 |         1848 | 2023-05-08     |      6 | available    |
+|    3619 | Taxi for Tobruk                              |        7007 |   23 |         1966 | 2022-11-05     |      5 | in stock     |
+|    3625 | Beverly Hills Chihuahua 2                    |        5206 |   81 |          482 | 2023-07-03     |      2 | in stock     |
+|    3634 | Robin Hood: Prince of Thieves                |        5527 |    7 |         2002 | 2023-04-02     |      5 | available    |
+|    3650 | Charlie Chan in The Chinese Cat              |        9789 |   79 |         7366 | 2023-09-23     |      3 | available    |
+|    3654 | Wuthering Heights                            |        2774 |   87 |         6550 | 2022-10-13     |      8 | unavailable  |
+|    3677 | Local Color                                  |          90 |   34 |         2088 | 2022-10-27     |      1 | out of stock |
+|    3692 | Chinese Take-Out (Chinese Take-Away) (Un     |        6584 |   85 |         1435 | 2022-10-06     |      0 | available    |
+|    3702 | Foreign Letters                              |        6858 |   90 |         3785 | 2023-05-12     |      6 | unavailable  |
+|    3713 | Platoon                                      |        8628 |   97 |         4555 | 2023-09-07     |      6 | unavailable  |
+|    3714 | Queen of Hearts                              |        4856 |   25 |         6351 | 2023-09-16     |      6 | unavailable  |
+|    3752 | "Acapulco                                    |           0 | 4318 |           98 | 0000-00-00     |   2023 | 9            |
+|    3753 | Funny Face                                   |        1588 |   43 |         6215 | 2022-12-22     |      4 | in stock     |
+|    3776 | Wu yen                                       |        6523 |   81 |          539 | 2023-01-13     |      4 | out of stock |
+|    3780 | Jude                                         |        3674 |   16 |         6703 | 2023-09-12     |      9 | out of stock |
+|    3805 | If I Were You                                |        1639 |   57 |         4042 | 2023-04-04     |      0 | out of stock |
+|    3815 | 588 Rue Paradis (Mother)                     |        5209 |   72 |         6963 | 2023-01-09     |      8 | unavailable  |
+|    3818 | Quarantine                                   |        1195 |   41 |         5774 | 2022-10-31     |      0 | in stock     |
+|    3820 | Elvis                                        |        2821 |   78 |         9842 | 2023-09-22     |      5 | available    |
+|    3825 | An Empress and the Warriors                  |        2314 |   97 |         4570 | 2023-09-10     |      5 | in stock     |
+|    3829 | Boiling Point                                |        7180 |   58 |         5798 | 2023-02-22     |      6 | out of stock |
+|    3833 | Route Irish                                  |        8346 |   77 |         4531 | 2023-05-04     |      2 | unavailable  |
+|    3845 | "Body                                        |           0 | 2229 |           30 | 0000-00-00     |   2023 | 9            |
+|    3846 | Dead Fish                                    |        7971 |   94 |         4266 | 2023-04-23     |      6 | unavailable  |
+|    3859 | Deathstalker                                 |        4003 |   35 |         5302 | 2023-09-14     |      8 | out of stock |
+|    3881 | Never on Sunday (Pote tin Kyriaki)           |        3164 |   98 |          233 | 2023-05-23     |      6 | out of stock |
+|    3882 | "Talented Mr. Ripley                         |           0 | 8858 |           78 | 0000-00-00     |   2023 | 5            |
+|    3884 | "Magnetic Monster                            |           0 | 5596 |           52 | 0000-00-00     |   2023 | 8            |
+|    3885 | Mentor                                       |        8965 |   22 |         3246 | 2022-11-15     |      4 | out of stock |
+|    3886 | "Discreet Charm of the Bourgeoisie           |           0 |    0 |         7115 | 0000-00-00     |    584 | 2022-12-31   |
+|    3893 | Rocketship X-M                               |        3187 |   88 |         9382 | 2023-07-29     |      1 | unavailable  |
+|    3898 | "Million to Juan                             |           0 | 2897 |           65 | 0000-00-00     |   2023 | 1            |
+|    3899 | Diggers                                      |        3390 |    2 |         9985 | 2022-11-11     |      7 | available    |
+|    3920 | Dangerous Davies: The Last Detective         |        3519 |   18 |         8374 | 2023-05-18     |      1 | in stock     |
+|    3921 | Who Pulled the Plug? (GÃ¶ta kanal eller      |         573 |   39 |         8609 | 2023-01-03     |      1 | out of stock |
+|    3924 | PressPausePlay                               |        1095 |   80 |          906 | 2022-11-26     |      9 | available    |
+|    3925 | Weird Woman                                  |        5331 |   73 |         4351 | 2023-07-20     |      1 | out of stock |
+|    3927 | Allegro non troppo                           |        6728 |   28 |         1201 | 2023-01-05     |      5 | out of stock |
+|    3930 | Contagion                                    |        7312 |   26 |         4792 | 2023-09-03     |      4 | available    |
+|    3932 | Day of the Dead                              |        2148 |    9 |         2275 | 2023-07-15     |      3 | available    |
+|    3938 | Surviving Desire                             |        2791 |   92 |         8208 | 2023-08-10     |      3 | available    |
+|    3948 | Sanshiro Sugata (Judo Saga) (Sugata Sans     |        9109 |   16 |         3507 | 2022-11-01     |      2 | out of stock |
+|    3960 | Scenes From a Marriage (Scener ur ett Ã¤     |        3158 |   99 |         1624 | 2023-06-17     |      3 | out of stock |
+|    3964 | Carnival of Souls                            |        3438 |   61 |         7564 | 2023-02-18     |      4 | available    |
+|    3975 | Avatar                                       |        4525 |   59 |         8087 | 2023-06-07     |      6 | unavailable  |
+|    3980 | Roxanne                                      |        2756 |   32 |         7415 | 2022-12-11     |      3 | unavailable  |
+|    3982 | "Paralyzing Fear: The Story of Polio in      |           0 | 6609 |            2 | 0000-00-00     |   2023 | 1            |
+|    3984 | "Glass Key                                   |           0 | 9369 |           65 | 0000-00-00     |   2022 | 2            |
+|    4010 | Colt 38 Special Squad                        |        3552 |   72 |         1869 | 2023-07-13     |      2 | available    |
+|    4011 | Bigfoot                                      |        3784 |   51 |         9963 | 2023-04-09     |      1 | available    |
+|    4013 | Headfirst                                    |        8144 |   98 |         3315 | 2023-01-29     |      2 | out of stock |
+|    4027 | Pittsburgh                                   |        8723 |   97 |          294 | 2023-07-26     |      1 | unavailable  |
+|    4032 | "Occupants                                   |           0 | 3287 |           44 | 0000-00-00     |   2023 | 9            |
+|    4040 | Two Queens and One Consort (Twee vorstin     |        3539 |   45 |          165 | 2023-07-05     |      1 | available    |
+|    4042 | Gimme Shelter                                |        1812 |   34 |         5882 | 2023-01-22     |      6 | out of stock |
+|    4043 | Retroactive                                  |        2317 |   54 |         5668 | 2023-09-21     |      3 | available    |
+|    4066 | "River Called Titas                          |           0 | 8768 |           23 | 0000-00-00     |   2022 | 4            |
+|    4070 | God Save the King                            |          91 |    5 |         2407 | 2022-12-23     |      5 | unavailable  |
+|    4106 | "Hand of Death                               |           0 | 6206 |           55 | 0000-00-00     |   2023 | 2            |
+|    4110 | Paradise Lost: The Child Murders at Robi     |        3041 |   32 |         1081 | 2023-04-29     |      4 | out of stock |
+|    4135 | LennoNYC                                     |        5220 |   20 |         1756 | 2022-11-29     |      5 | available    |
+|    4136 | Crippled Masters (Tian can di que)           |         817 |   14 |         3228 | 2023-06-02     |      4 | out of stock |
+|    4153 | "Anarchist Cookbook                          |           0 | 1532 |           88 | 0000-00-00     |   2022 | 2            |
+|    4162 | "Life and Times of Judge Roy Bean            |           0 | 7250 |            6 | 0000-00-00     |   2022 | 6            |
+|    4175 | Earth (Tierra)                               |        9172 |   49 |         2716 | 2023-08-12     |      6 | in stock     |
+|    4191 | Date Night                                   |        3125 |   91 |         4902 | 2023-02-23     |      5 | unavailable  |
+|    4200 | Una Noche                                    |        2857 |   46 |         8644 | 2022-10-16     |      9 | unavailable  |
+|    4213 | "Separation                                  |           0 |    0 |          441 | 0000-00-00     |    299 | 2022-10-27   |
+|    4230 | "Tall Man                                    |           0 | 4835 |           57 | 0000-00-00     |   2023 | 6            |
+|    4241 | CamarÃ³n: When Flamenco Became Legend        |        6613 |   80 |         7072 | 2023-02-08     |      5 | in stock     |
+|    4251 | Tenchi: The Samurai Astronomer               |        1585 |   92 |          540 | 2023-07-09     |      0 | available    |
+|    4253 | Big Fat Liar                                 |        5758 |   93 |         1351 | 2023-03-03     |      7 | in stock     |
+|    4261 | "Honor Among Thieves (Adieu l'ami) (Fare     |           0 | 2201 |           61 | 0000-00-00     |   2023 | 3            |
+|    4263 | Modulations                                  |         122 |   17 |         2984 | 2023-04-25     |      4 | out of stock |
+|    4268 | 100 Years at the Movies                      |        3637 |   43 |         9970 | 2023-09-10     |      2 | in stock     |
+|    4275 | "Castle of the Living Dead (Castello Dei     |           0 | 1128 |           16 | 0000-00-00     |   2022 | 8            |
+|    4282 | Persuasion                                   |        2695 |   55 |         8374 | 2023-03-27     |      0 | out of stock |
+|    4286 | "Dawn Rider                                  |           0 |   60 |           26 | 0000-00-00     |   2022 | 1            |
+|    4288 | "Third Miracle                               |           0 | 2526 |           82 | 0000-00-00     |   2023 | 6            |
+|    4297 | Taming the Fire (Ukroshcheniye ognya)        |        1299 |   62 |         3340 | 2023-08-20     |      6 | available    |
+|    4306 | "Presidio                                    |           0 | 6282 |           20 | 0000-00-00     |   2023 | 9            |
+|    4308 | Our Children (Ã€ perdre la raison)           |         971 |   74 |         1968 | 2023-04-13     |      6 | unavailable  |
+|    4319 | Shanghaied                                   |        3802 |   64 |         1084 | 2023-01-16     |      0 | available    |
+|    4341 | "Leo's Room (Cuarto de Leo                   |           0 |  627 |           39 | 0000-00-00     |   2023 | 1            |
+|    4344 | Cass Timberlane                              |        3455 |   17 |         2513 | 2023-07-19     |      5 | available    |
+|    4354 | Shanghai Calling                             |        4887 |   41 |         3290 | 2023-09-26     |      6 | out of stock |
+|    4361 | "Newest Pledge                               |           0 | 4374 |           76 | 0000-00-00     |   2023 | 5            |
+|    4362 | "First Beautiful Thing                       |           0 | 2696 |           32 | 0000-00-00     |   2023 | 9            |
+|    4380 | "Message from Akira Kurosawa: For Beauti     |           0 | 2909 |           12 | 0000-00-00     |   2022 | 0            |
+|    4383 | Dillinger Is Dead (Dillinger Ã¨ morto)       |        2777 |   57 |         8470 | 2023-07-30     |      1 | available    |
+|    4394 | Shadow People                                |        5779 |   74 |         8320 | 2022-12-25     |      8 | unavailable  |
+|    4398 | Tales of Manhattan                           |        4213 |   29 |         9204 | 2022-10-21     |      9 | available    |
+|    4401 | "Horseman                                    |           0 | 7632 |            3 | 0000-00-00     |   2022 | 8            |
+|    4423 | What Will You Do When You Catch Me? (Co      |        4401 |   41 |         5140 | 2023-07-24     |      6 | in stock     |
+|    4426 | Saving Mr. Banks                             |        8210 |   13 |         9645 | 2023-02-11     |      8 | in stock     |
+|    4434 | Attila                                       |          46 |   97 |         4990 | 2023-09-22     |      0 | unavailable  |
+|    4452 | Birth                                        |        8065 |   89 |         2645 | 2023-05-30     |      8 | in stock     |
+|    4462 | "Mother's Courage: Talking Back to Autis     |           0 | 9666 |           40 | 0000-00-00     |   2023 | 3            |
+|    4470 | Tom Sawyer                                   |        1120 |   22 |         8092 | 2023-06-21     |      2 | in stock     |
+|    4472 | "Light at the Edge of the World              |           0 | 7401 |           56 | 0000-00-00     |   2022 | 9            |
+|    4489 | "Brady Bunch Movie                           |           0 | 3832 |           74 | 0000-00-00     |   2022 | 7            |
+|    4510 | Rampart                                      |        4177 |   61 |         2990 | 2023-08-30     |      0 | in stock     |
+|    4513 | Dumbo                                        |        7793 |   76 |         7809 | 2023-04-05     |      4 | out of stock |
+|    4531 | Crime of Passion                             |        4241 |   32 |         8880 | 2023-09-22     |      3 | unavailable  |
+|    4535 | Nurse Betty                                  |        1068 |   44 |         3518 | 2023-02-24     |      7 | out of stock |
+|    4538 | Pay It Forward                               |        2210 |   83 |         4015 | 2023-04-14     |      4 | available    |
+|    4540 | Parenthood                                   |        9591 |   13 |         8676 | 2023-09-22     |      9 | in stock     |
+|    4542 | Melancholia                                  |        7485 |   30 |         5474 | 2023-05-13     |      0 | in stock     |
+|    4582 | Journey to the Sun (GÃ¼nese yolculuk)        |        6021 |   30 |         2867 | 2022-10-21     |      5 | unavailable  |
+|    4592 | Cadillac Records                             |         978 |   18 |         2261 | 2022-12-09     |      1 | out of stock |
+|    4593 | "Navigator: A Mediaeval Odyssey              |           0 | 2616 |           53 | 0000-00-00     |   2023 | 3            |
+|    4598 | Rudolph the Red-Nosed Reindeer               |        8239 |   61 |         9900 | 2023-08-25     |      7 | available    |
+|    4607 | "Incredibly True Adventure of Two Girls      |           0 | 4116 |           92 | 0000-00-00     |   2022 | 8            |
+|    4609 | Sullivan's Travels                           |        7560 |    4 |         8962 | 2023-09-12     |      8 | available    |
+|    4615 | Colt Comrades                                |        6524 |   11 |         1252 | 2023-03-07     |      1 | in stock     |
+|    4627 | "Stationmaster Is on Fire - The Movie        |           0 |    0 |         2000 | 0000-00-00     |   5421 | 2023-02-06   |
+|    4638 | C.S.A.: The Confederate States of Americ     |        1544 |   20 |         5164 | 2023-01-02     |      8 | in stock     |
+|    4650 | Dolphin Tale                                 |          23 |   87 |         6242 | 2022-11-30     |      0 | unavailable  |
+|    4660 | Insignificance                               |        3820 |   38 |         2234 | 2022-12-28     |      9 | available    |
+|    4665 | "Perils of Gwendoline in the Land of the     |           0 | 5319 |           12 | 0000-00-00     |   2023 | 6            |
+|    4700 | "Shunning                                    |           0 | 5419 |           93 | 0000-00-00     |   2022 | 2            |
+|    4707 | "Steel Trap                                  |           0 |  794 |           80 | 0000-00-00     |   2023 | 3            |
+|    4712 | "Godzilla                                    |           0 | 4270 |           42 | 0000-00-00     |   2023 | 5            |
+|    4718 | Mirage                                       |        3407 |   66 |         5120 | 2023-08-19     |      6 | in stock     |
+|    4730 | "American in Paris                           |           0 | 8835 |           23 | 0000-00-00     |   2023 | 6            |
+|    4759 | Carol Channing: Larger Than Life             |        5571 |   97 |         5229 | 2023-01-18     |      5 | unavailable  |
+|    4762 | Sink or Swim                                 |        3492 |   96 |         1403 | 2022-11-27     |      8 | available    |
+|    4778 | Norma Rae                                    |         941 |   58 |          521 | 2023-03-02     |      7 | out of stock |
+|    4798 | Cry of the City                              |        2511 |    2 |         3301 | 2022-12-29     |      2 | in stock     |
+|    4811 | The Fighting 69th                            |        4151 |   90 |         2075 | 2023-07-30     |      1 | in stock     |
+|    4815 | Hairspray                                    |        6307 |   95 |         4734 | 2023-08-26     |      1 | available    |
+|    4834 | Rio Sex Comedy                               |        3889 |   76 |         7157 | 2022-12-01     |      3 | unavailable  |
+|    4840 | Bernie                                       |        3054 |   60 |         2470 | 2022-12-24     |      2 | unavailable  |
+|    4861 | Adios Carmen                                 |        5917 |    0 |         5728 | 2022-11-03     |      1 | unavailable  |
+|    4894 | Feet First                                   |        9287 |   73 |         1754 | 2023-01-14     |      0 | in stock     |
+|    4899 | Wishful Thinking                             |        4325 |   22 |         7242 | 2023-01-22     |      1 | out of stock |
+|    4900 | "Oil                                         |           0 |    0 |            0 | 0000-00-00     |     16 | 2174         |
+|    4924 | "Gate II: Trespassers                        |           0 | 8672 |            7 | 0000-00-00     |   2023 | 1            |
+|    4936 | "Way                                         |           0 | 9627 |           90 | 0000-00-00     |   2023 | 4            |
+|    4939 | "My Son                                      |           0 |    0 |         1829 | 0000-00-00     |    301 | 2023-04-06   |
+|    4941 | Headless Body in Topless Bar                 |         384 |   30 |         5749 | 2022-12-24     |      0 | available    |
+|    4942 | Night Train                                  |         307 |   76 |         4944 | 2023-01-12     |      2 | available    |
+|    4950 | Swing                                        |        5188 |   38 |         2498 | 2023-08-10     |      3 | available    |
+|    4954 | Merchants of Doubt                           |        7608 |   63 |         5803 | 2023-04-10     |      0 | out of stock |
+|    4959 | Saved!                                       |        3262 |   73 |           14 | 2023-03-30     |      7 | out of stock |
+|    4961 | Whore                                        |        1755 |   74 |         5652 | 2022-10-17     |      3 | unavailable  |
+|    4967 | Samurai III: Duel on Ganryu Island (a.k.     |        7653 |   62 |         2030 | 2022-11-30     |      9 | in stock     |
+|    4972 | "Edukators                                   |           0 | 2471 |           84 | 0000-00-00     |   2023 | 7            |
+|    4974 | Gorky Park                                   |        5990 |   73 |         4336 | 2023-10-02     |      5 | out of stock |
+|    4991 | Against the Current                          |        3080 |   25 |         9672 | 2023-05-06     |      5 | in stock     |
+|    4995 | God's Pocket                                 |        5161 |    6 |         9796 | 2023-06-06     |      1 | out of stock |
+|    5002 | "Red Bear                                    |           0 |  978 |           60 | 0000-00-00     |   2022 | 2            |
+|    5004 | Watership Down                               |         611 |    1 |         7726 | 2023-07-13     |      1 | in stock     |
+|    5051 | Hot Lead and Cold Feet                       |        5030 |   96 |          480 | 2023-08-11     |      3 | available    |
+|    5054 | The Voices                                   |        6093 |   15 |         9527 | 2022-12-16     |      9 | out of stock |
+|    5057 | One Point O                                  |        4433 |   38 |         7913 | 2023-04-17     |      4 | in stock     |
+|    5069 | Gladiator                                    |        9640 |   82 |         4764 | 2023-01-30     |      7 | unavailable  |
+|    5076 | And While We Were Here                       |        4970 |    8 |         5018 | 2023-02-05     |      2 | unavailable  |
+|    5101 | Appleseed Alpha                              |        4146 |   35 |         2493 | 2023-04-03     |      9 | in stock     |
+|    5102 | "Suicide Shop                                |           0 | 8400 |           22 | 0000-00-00     |   2023 | 7            |
+|    5125 | National Theatre Live: Frankenstein          |        9849 |   74 |         4757 | 2023-07-16     |      2 | out of stock |
+|    5129 | Away We Go                                   |        8035 |   69 |         6037 | 2023-06-18     |      0 | available    |
+|    5135 | "Codes of Gender                             |           0 | 8381 |           58 | 0000-00-00     |   2023 | 7            |
+|    5141 | Dollman vs. Demonic Toys                     |        7368 |   45 |         8020 | 2023-04-28     |      1 | out of stock |
+|    5143 | "SamouraÃ¯                                   |           0 |    0 |          743 | 0000-00-00     |   4500 | 2023-07-04   |
+|    5146 | The Sea Chase                                |        7810 |   21 |         7650 | 2023-02-27     |      8 | out of stock |
+|    5149 | Three O'Clock High                           |         564 |   53 |         5256 | 2023-06-23     |      3 | out of stock |
+|    5158 | Homefront                                    |        5398 |   83 |         3824 | 2022-11-18     |      1 | available    |
+|    5165 | "Judge                                       |           0 | 8467 |            7 | 0000-00-00     |   2022 | 9            |
+|    5176 | "Dark Backward                               |           0 |  110 |           30 | 0000-00-00     |   2022 | 0            |
+|    5183 | American Addict                              |        9775 |   65 |         6674 | 2023-07-19     |      7 | unavailable  |
+|    5185 | "Hawaiians                                   |           0 |  988 |           85 | 0000-00-00     |   2023 | 4            |
+|    5198 | "Velocity of Gary                            |           0 | 7648 |           26 | 0000-00-00     |   2023 | 5            |
+|    5199 | "Innocent Sleep                              |           0 | 3220 |           43 | 0000-00-00     |   2023 | 2            |
+|    5206 | Owning Mahowny                               |        4592 |   35 |         5205 | 2023-01-10     |      3 | unavailable  |
+|    5212 | "Ghost of Frankenstein                       |           0 | 5630 |           97 | 0000-00-00     |   2023 | 1            |
+|    5214 | Adventures of Captain Marvel                 |        6657 |   70 |         4043 | 2023-09-19     |      4 | in stock     |
+|    5217 | Home Movie                                   |        8019 |   95 |         8656 | 2022-10-11     |      2 | unavailable  |
+|    5220 | Agent Cody Banks 2: Destination London       |        1957 |   96 |         7818 | 2022-10-29     |      9 | out of stock |
+|    5266 | Hamilton - In the Interest of the Nation     |        7076 |   46 |         2518 | 2022-11-02     |      2 | unavailable  |
+|    5270 | "Lie                                         |           0 | 1032 |           80 | 0000-00-00     |   2022 | 7            |
+|    5279 | Morgan Stewart's Coming Home                 |        9079 |   33 |          155 | 2022-12-04     |      1 | unavailable  |
+|    5325 | America: Imagine the World Without Her       |        1135 |   60 |         9406 | 2023-01-04     |      3 | unavailable  |
+|    5339 | Undercover Man                               |        8769 |   95 |         6398 | 2023-09-22     |      5 | unavailable  |
+|    5341 | "Brass Teapot                                |           0 | 9457 |           37 | 0000-00-00     |   2023 | 4            |
+|    5346 | Fortress                                     |        6914 |   21 |         6612 | 2023-08-15     |      7 | out of stock |
+|    5351 | "Illustrated Man                             |           0 | 6359 |           15 | 0000-00-00     |   2023 | 7            |
+|    5361 | Baby's Day Out                               |         434 |    4 |         6931 | 2023-08-31     |      7 | available    |
+|    5365 | Six of a Kind                                |        2895 |   28 |         3849 | 2023-09-03     |      2 | unavailable  |
+|    5375 | MacGruber                                    |        2084 |   89 |         3343 | 2023-02-26     |      4 | out of stock |
+|    5398 | Alvarez Kelly                                |        8743 |   25 |         1242 | 2022-12-05     |      5 | available    |
+|    5405 | Sun Alley (Sonnenallee)                      |        1302 |    4 |         1148 | 2023-06-21     |      9 | out of stock |
+|    5423 | "Look of Silence                             |           0 | 4337 |           58 | 0000-00-00     |   2023 | 0            |
+|    5430 | "Consequences of Love                        |           0 |    0 |         9379 | 0000-00-00     |   4020 | 2022-10-27   |
+|    5437 | Public Sex                                   |        1156 |   43 |         7637 | 2022-11-09     |      1 | out of stock |
+|    5450 | Must Love Dogs                               |        1444 |   70 |         6272 | 2022-10-07     |      9 | unavailable  |
+|    5454 | Senotaji                                     |        4437 |   61 |         3367 | 2023-02-13     |      4 | out of stock |
+|    5456 | Muck                                         |        8549 |   83 |         8028 | 2023-05-15     |      2 | unavailable  |
+|    5484 | Gods and Monsters                            |        4319 |   90 |         6041 | 2023-09-27     |      4 | available    |
+|    5511 | Crime at Porta Romana                        |        9666 |   28 |         5873 | 2023-02-27     |      9 | available    |
+|    5516 | King of New York                             |        6932 |   46 |         4779 | 2023-07-30     |      7 | in stock     |
+|    5524 | The Harmony Game                             |        6914 |   82 |         9709 | 2023-06-10     |      7 | available    |
+|    5557 | Killer Movie                                 |        7825 |    3 |         2705 | 2023-05-31     |      1 | in stock     |
+|    5595 | "Curve                                       |           0 | 3153 |           31 | 0000-00-00     |   2023 | 7            |
+|    5600 | Sleep Dealer                                 |        2759 |   78 |         1216 | 2023-06-16     |      1 | available    |
+|    5613 | Hellraiser: Deader                           |        1365 |   31 |         8525 | 2022-10-05     |      0 | available    |
+|    5614 | The Longest Week                             |        4102 |   63 |         7003 | 2023-08-24     |      4 | available    |
+|    5625 | Forks Over Knives                            |        9570 |   91 |         5572 | 2022-10-30     |      5 | unavailable  |
+|    5642 | Easy Virtue                                  |        3909 |   95 |         7022 | 2022-10-16     |      5 | in stock     |
+|    5655 | "Blood                                       |           0 |    0 |         8361 | 0000-00-00     |    368 | 2022-11-03   |
+|    5658 | Dragonheart 2: A New Beginning               |        5234 |   68 |         7262 | 2022-11-07     |      6 | unavailable  |
+|    5701 | Startup.com                                  |        7495 |   10 |         4123 | 2023-02-13     |      2 | in stock     |
+|    5736 | "Great Passage                               |           0 | 2153 |           65 | 0000-00-00     |   2023 | 1            |
+|    5773 | Bullitt                                      |        7650 |   15 |         3798 | 2023-07-17     |      5 | out of stock |
+|    5836 | Hour of the Wolf (Vargtimmen)                |        3345 |   18 |         9793 | 2023-06-28     |      0 | in stock     |
+|    5848 | Boot Camp                                    |        5375 |   10 |         9007 | 2023-07-03     |      4 | unavailable  |
+|    5849 | "Woman's Secret                              |           0 | 1588 |           63 | 0000-00-00     |   2023 | 0            |
+|    5853 | "Star Witness                                |           0 | 5254 |            8 | 0000-00-00     |   2023 | 3            |
+|    5854 | Guy and Madeline on a Park Bench             |        7381 |   78 |         3028 | 2022-11-09     |      0 | in stock     |
+|    5855 | I Accuse                                     |         353 |   58 |         6096 | 2023-01-01     |      1 | in stock     |
+|    5859 | "Bourne Ultimatum                            |           0 | 5012 |           45 | 0000-00-00     |   2023 | 4            |
+|    5872 | Grass: A Nation's Battle for Life            |        4856 |   31 |         4517 | 2023-03-31     |      2 | out of stock |
+|    5895 | Pirates of the Caribbean: Dead Man's Che     |        6325 |   50 |         4190 | 2023-09-18     |      9 | in stock     |
+|    5906 | Star!                                        |        8022 |    7 |         8514 | 2022-11-17     |      7 | unavailable  |
+|    5915 | "Harder They Come                            |           0 | 8159 |           96 | 0000-00-00     |   2023 | 2            |
+|    5925 | And So It Goes                               |         254 |   12 |         8289 | 2023-05-03     |      0 | in stock     |
+|    5933 | Scenic Route                                 |        4186 |   61 |         1287 | 2023-07-20     |      1 | available    |
+|    5944 | Camp Hell                                    |        3973 |   34 |         1759 | 2023-07-04     |      6 | in stock     |
+|    5948 | Athena                                       |        2495 |   26 |         8404 | 2023-07-05     |      4 | out of stock |
+|    5950 | Tribes                                       |        9963 |    2 |         3278 | 2023-05-28     |      6 | in stock     |
+|    5959 | Peter Pan                                    |        5455 |   89 |          652 | 2023-05-02     |      0 | in stock     |
+|    5970 | Miracle                                      |        7065 |    9 |         6025 | 2022-10-14     |      2 | available    |
+|    5978 | When in Rome                                 |        7749 |   95 |         1094 | 2022-10-20     |      5 | out of stock |
+|    5981 | Conquest of Space                            |         645 |   16 |         1634 | 2023-08-19     |      7 | unavailable  |
+|    5985 | "Wall                                        |           0 | 8936 |           59 | 0000-00-00     |   2022 | 0            |
+|    5990 | Kummeli V                                    |        6279 |   55 |         6398 | 2022-12-21     |      9 | available    |
+|    5991 | Mystery Science Theater 3000: The Movie      |        5891 |   22 |         2288 | 2023-05-22     |      6 | unavailable  |
+|    5997 | Frostbitten (Frostbiten)                     |        7511 |   53 |          656 | 2023-06-04     |      0 | unavailable  |
+|    6002 | "Oslo                                        |           0 |   31 |         5180 | 0000-00-00     |   4877 | 2023-06-18   |
+|    6005 | Maid in Manhattan                            |        4939 |   45 |         1767 | 2023-05-16     |      8 | in stock     |
+|    6022 | Who's Camus Anyway? (Kamyu nante shirana     |        8235 |   45 |         3355 | 2022-12-20     |      1 | available    |
+|    6033 | "Deux mondes                                 |           0 |  314 |           64 | 0000-00-00     |   2022 | 0            |
+|    6035 | Giorgino                                     |        2271 |   65 |         6596 | 2023-05-28     |      3 | available    |
+|    6045 | Big Business                                 |        4999 |   85 |         5838 | 2023-05-27     |      9 | unavailable  |
+|    6050 | Sgt. Bilko                                   |        2240 |   68 |          968 | 2023-02-23     |      1 | available    |
+|    6059 | "Firm                                        |           0 | 9117 |           93 | 0000-00-00     |   2023 | 9            |
+|    6067 | Stanley Kubrick: A Life in Pictures          |        3800 |   78 |         4626 | 2023-07-27     |      4 | unavailable  |
+|    6072 | Faces of Death 4                             |        9578 |   13 |         7076 | 2023-04-18     |      8 | unavailable  |
+|    6073 | Touch of Pink                                |        1595 |   12 |          784 | 2023-08-11     |      0 | unavailable  |
+|    6097 | More Wild Wild West                          |        2626 |   60 |         4044 | 2023-09-03     |      2 | available    |
+|    6105 | "Endless Summer 2                            |           0 | 5473 |           88 | 0000-00-00     |   2023 | 6            |
+|    6125 | The Grump                                    |        2036 |   18 |         3154 | 2022-12-12     |      3 | out of stock |
+|    6146 | Out for a Kill                               |        8349 |   71 |         3547 | 2023-06-14     |      2 | in stock     |
+|    6148 | Breaking Wind                                |        7041 |   93 |         2238 | 2023-02-07     |      4 | available    |
+|    6149 | Blade: Trinity                               |        1635 |    3 |         2217 | 2023-01-20     |      4 | unavailable  |
+|    6157 | Kiss the Bride                               |        9952 |   73 |         5669 | 2023-01-01     |      5 | available    |
+|    6176 | Mr. Moto's Gamble                            |        2235 |   90 |         9522 | 2022-12-16     |      4 | in stock     |
+|    6191 | "Glass Agency                                |           0 | 2281 |           17 | 0000-00-00     |   2023 | 1            |
+|    6206 | "Marine Story                                |           0 | 8040 |           13 | 0000-00-00     |   2023 | 9            |
+|    6224 | Mysterious Island                            |        2613 |   45 |         8310 | 2023-03-06     |      2 | available    |
+|    6229 | "Human Behavior Experiments                  |           0 | 2080 |           29 | 0000-00-00     |   2023 | 0            |
+|    6234 | Extreme Ops                                  |        6821 |   76 |         6444 | 2023-04-13     |      5 | in stock     |
+|    6247 | "Dalton                                      |           0 | 4505 |           46 | 0000-00-00     |   2022 | 6            |
+|    6282 | "Key                                         |           0 | 8847 |           16 | 0000-00-00     |   2023 | 8            |
+|    6297 | Maid in Sweden                               |        4454 |   43 |         2446 | 2023-03-24     |      8 | out of stock |
+|    6298 | Leprechaun 3                                 |        1354 |   33 |         4454 | 2023-01-01     |      6 | in stock     |
+|    6302 | Bad 25                                       |        9760 |   13 |         6436 | 2023-01-06     |      6 | unavailable  |
+|    6313 | Back in Business                             |        8342 |    4 |          967 | 2022-12-13     |      2 | in stock     |
+|    6354 | Zombie Island Massacre                       |        5812 |    4 |         9115 | 2023-06-25     |      4 | out of stock |
+|    6368 | Casper                                       |        7782 |   32 |         2186 | 2022-10-16     |      5 | available    |
+|    6370 | "Condemned                                   |           0 | 4863 |           69 | 0000-00-00     |   2023 | 4            |
+|    6377 | "Wild Bees                                   |           0 |  500 |           80 | 0000-00-00     |   2023 | 6            |
+|    6390 | They Live by Night                           |        5058 |   97 |         4572 | 2023-05-01     |      1 | in stock     |
+|    6408 | "Manta                                       |           0 | 9927 |           24 | 0000-00-00     |   2023 | 6            |
+|    6415 | Stardust Memories                            |        1200 |   33 |          517 | 2023-03-28     |      8 | unavailable  |
+|    6425 | Atonement                                    |        4572 |    5 |         8813 | 2023-07-28     |      3 | unavailable  |
+|    6428 | "Corbeau                                     |           0 |    0 |         1740 | 0000-00-00     |   7604 | 2023-02-15   |
+|    6438 | Being Cyrus                                  |        5340 |   55 |         1450 | 2023-06-30     |      7 | in stock     |
+|    6440 | "Girl with the Dragon Tattoo                 |           0 | 8385 |           80 | 0000-00-00     |   2023 | 0            |
+|    6458 | "Frozen Ground                               |           0 | 8469 |           53 | 0000-00-00     |   2023 | 8            |
+|    6461 | "Idiots                                      |           0 | 3908 |           81 | 0000-00-00     |   2022 | 0            |
+|    6462 | Not Another Not Another Movie                |        5847 |   71 |         6577 | 2023-04-27     |      0 | in stock     |
+|    6468 | "Parisienne                                  |           0 | 6963 |           40 | 0000-00-00     |   2023 | 1            |
+|    6477 | Lone Wolf and Cub: Sword of Vengeance (K     |        6075 |   27 |         4961 | 2023-05-30     |      8 | unavailable  |
+|    6510 | Running Scared                               |         680 |   57 |         4209 | 2023-05-26     |      5 | in stock     |
+|    6511 | Drei Stunden                                 |        1064 |    4 |         7826 | 2022-11-24     |      2 | in stock     |
+|    6531 | High School Confidential!                    |        6666 |   63 |         8116 | 2023-05-31     |      2 | available    |
+|    6533 | Disclosure                                   |        7998 |   32 |         6057 | 2022-10-16     |      4 | unavailable  |
+|    6558 | First Monday in October                      |        2417 |   97 |         2551 | 2023-08-23     |      4 | available    |
+|    6575 | "Five People You Meet in Heaven              |           0 |  225 |           39 | 0000-00-00     |   2023 | 1            |
+|    6581 | South Park: Imaginationland                  |        9350 |   41 |         1574 | 2023-05-16     |      4 | available    |
+|    6584 | Three Men and a Cradle (3 hommes et un c     |         120 |   31 |         1264 | 2022-12-25     |      5 | out of stock |
+|    6587 | No Way Out                                   |        4381 |   26 |         4089 | 2023-05-04     |      0 | unavailable  |
+|    6588 | Sophia de Mello Breyner Andresen             |        5741 |   45 |         4644 | 2023-01-24     |      3 | available    |
+|    6589 | Jesse Stone: Night Passage                   |        2688 |   51 |         6946 | 2023-04-22     |      5 | available    |
+|    6598 | "House with Laughing Windows                 |           0 |    0 |         8728 | 0000-00-00     |   9321 | 2023-01-31   |
+|    6625 | Counsellor at Law                            |        5005 |   79 |         6158 | 2023-01-20     |      3 | unavailable  |
+|    6626 | Dirty Movie                                  |        9221 |   35 |         2874 | 2023-08-20     |      5 | out of stock |
+|    6631 | "Boxtrolls                                   |           0 | 6105 |           74 | 0000-00-00     |   2023 | 8            |
+|    6638 | Effi Briest (Fontane - Effi Briest)          |        1286 |   84 |         5392 | 2023-01-05     |      6 | in stock     |
+|    6645 | Driving Lessons                              |        2015 |   82 |         3309 | 2023-07-28     |      5 | unavailable  |
+|    6655 | "Way Ahead                                   |           0 | 4745 |           18 | 0000-00-00     |   2023 | 1            |
+|    6662 | "Addams Family                               |           0 | 2344 |           29 | 0000-00-00     |   2023 | 8            |
+|    6667 | Rope                                         |        8150 |   41 |         3968 | 2022-12-29     |      6 | available    |
+|    6671 | Commandments                                 |        9810 |   51 |         3290 | 2023-07-05     |      5 | available    |
+|    6673 | Chasing Papi (a.k.a. Papi Chulo)             |        5780 |   91 |         3949 | 2023-02-07     |      3 | available    |
+|    6679 | Naqoyqatsi                                   |        5217 |    1 |         8341 | 2023-05-09     |      1 | unavailable  |
+|    6681 | Beyond All Boundaries                        |        4242 |   38 |         7702 | 2023-07-18     |      6 | unavailable  |
+|    6704 | Messiah of Evil                              |         841 |   56 |         5548 | 2022-12-23     |      9 | out of stock |
+|    6711 | Shocker                                      |        1521 |   46 |         1945 | 2023-05-16     |      6 | available    |
+|    6734 | Luther                                       |        1480 |   40 |         6890 | 2022-10-18     |      8 | unavailable  |
+|    6737 | "For a Good Time                             |           0 | 9895 |           41 | 0000-00-00     |   2023 | 2            |
+|    6740 | Best Friends                                 |         492 |   52 |         8611 | 2022-12-05     |      5 | out of stock |
+|    6748 | Justice League: The Flashpoint Paradox       |        1372 |   44 |         4989 | 2023-01-21     |      4 | in stock     |
+|    6762 | Most Likely to Succeed                       |        5222 |   70 |         7840 | 2023-02-15     |      8 | available    |
+|    6772 | Daria: Is It Fall Yet?                       |        8294 |   59 |         9003 | 2023-08-02     |      4 | in stock     |
+|    6774 | Cyborg 2: Glass Shadow                       |        8722 |   82 |         8808 | 2023-01-21     |      4 | in stock     |
+|    6781 | Heist                                        |         295 |   31 |         2981 | 2023-02-22     |      6 | unavailable  |
+|    6790 | Vampire Hunter D: Bloodlust (Banpaia han     |        9496 |   51 |         5340 | 2023-03-15     |      8 | available    |
+|    6802 | Our Vines Have Tender Grapes                 |        9244 |   33 |         2513 | 2022-11-14     |      4 | unavailable  |
+|    6810 | Beneath the Rooftops of Paris (Sous les      |        5358 |   76 |          510 | 2023-07-23     |      6 | in stock     |
+|    6824 | Family Weekend                               |        9202 |   13 |         1193 | 2022-12-15     |      9 | available    |
+|    6839 | Les Invisibles                               |        9398 |   90 |         8407 | 2023-05-11     |      3 | available    |
+|    6872 | Railroaded!                                  |        2744 |   29 |          490 | 2023-02-15     |      7 | available    |
+|    6876 | TITANIC                                      |          48 | 1000 |         5657 | 2004-08-10     |      3 | OCCUPIED     |
+|    6884 | Camp Rock 2: The Final Jam                   |        4822 |    2 |         7928 | 2022-12-26     |      2 | out of stock |
+|    6890 | See How They Fall (Regarde les hommes to     |        5583 |   69 |         1729 | 2023-03-10     |      0 | out of stock |
+|    6892 | Broken Embraces (Los abrazos rotos)          |        5068 |   65 |         1761 | 2022-11-08     |      1 | available    |
+|    6916 | Young & Wild (Joven y alocada)               |        7506 |   57 |         7332 | 2023-01-29     |      4 | in stock     |
+|    6921 | Tank Girl                                    |        4934 |    3 |         3206 | 2023-06-01     |      9 | available    |
+|    6934 | Alaska: Spirit of the Wild                   |        3235 |   80 |         2712 | 2023-01-31     |      0 | out of stock |
+|    6942 | Samurai (Samourais)                          |        4626 |   77 |           49 | 2023-07-02     |      6 | unavailable  |
+|    6943 | I Confess                                    |        8363 |   92 |         5351 | 2022-12-15     |      3 | unavailable  |
+|    6957 | "Maradona                                    |           0 |    0 |         8298 | 0000-00-00     |   4021 | 2023-07-13   |
+|    6964 | Broken Arrow                                 |        5330 |   55 |         8958 | 2022-10-24     |      8 | out of stock |
+|    6969 | Tokio Baby                                   |        2044 |   40 |         2599 | 2023-01-24     |      8 | out of stock |
+|    6970 | Rich and Strange                             |         679 |    4 |         4482 | 2023-04-25     |      5 | out of stock |
+|    6971 | Search and Destroy                           |        4505 |   20 |         8228 | 2023-04-24     |      4 | unavailable  |
+|    6989 | "Countess                                    |           0 | 4098 |           92 | 0000-00-00     |   2022 | 0            |
+|    6995 | Fitzcarraldo                                 |        9056 |    5 |         1239 | 2023-01-24     |      3 | in stock     |
+|    6997 | Carmen Miranda: Bananas Is My Business       |        4893 |   55 |         1970 | 2023-01-30     |      1 | out of stock |
+|    7003 | Rampo (a.k.a. The Mystery of Rampo)          |        2336 |   18 |            3 | 2023-02-20     |      4 | available    |
+|    7027 | Please Give                                  |        6814 |   29 |         5405 | 2022-10-24     |      4 | out of stock |
+|    7042 | Bikini Beach                                 |        7454 |   79 |         7050 | 2023-07-07     |      6 | out of stock |
+|    7048 | To Encourage the Others                      |         894 |   32 |         2557 | 2022-12-15     |      8 | available    |
+|    7051 | At the River I Stand                         |        5659 |   64 |         3607 | 2022-12-19     |      3 | in stock     |
+|    7078 | New Orleans Uncensored                       |        7391 |   47 |         1577 | 2022-12-31     |      4 | unavailable  |
+|    7079 | "Dudesons Movie                              |           0 | 7551 |           16 | 0000-00-00     |   2022 | 8            |
+|    7088 | Love and Sex under Nazi Occupation (Amou     |        7209 |   85 |         6153 | 2023-09-30     |      2 | out of stock |
+|    7095 | "Big Tease                                   |           0 | 8896 |           79 | 0000-00-00     |   2022 | 7            |
+|    7115 | Fear City                                    |        2562 |   44 |          580 | 2023-09-08     |      6 | unavailable  |
+|    7120 | Blessed Event                                |        4163 |   53 |         2336 | 2023-02-16     |      8 | in stock     |
+|    7129 | LOL                                          |        5234 |   51 |         5276 | 2023-03-29     |      0 | in stock     |
+|    7144 | Hell Night                                   |        5807 |   25 |         6721 | 2023-08-31     |      6 | available    |
+|    7161 | "Ranma Â½: Big Trouble in Nekonron           |           0 | 8290 |           74 | 0000-00-00     |   2023 | 6            |
+|    7176 | Zardoz                                       |        7799 |    4 |         5347 | 2023-09-22     |      4 | unavailable  |
+|    7180 | Madame Tutli-Putli                           |        2175 |   22 |         2847 | 2022-10-25     |      9 | out of stock |
+|    7203 | "Vanquished                                  |           0 | 9406 |           61 | 0000-00-00     |   2023 | 9            |
+|    7214 | "Palm Beach Story                            |           0 | 1362 |           88 | 0000-00-00     |   2023 | 6            |
+|    7227 | Spiritual Kung Fu (Quan jing)                |        4157 |   75 |         9492 | 2023-02-23     |      6 | unavailable  |
+|    7247 | "Invisible Woman                             |           0 | 8406 |           70 | 0000-00-00     |   2023 | 8            |
+|    7253 | Curse of Chucky (Child's Play 6)             |         719 |   95 |         2469 | 2023-01-23     |      2 | out of stock |
+|    7255 | "Silent Night                                |           0 | 8562 |           66 | 0000-00-00     |   2022 | 8            |
+|    7261 | Trojan Eddie                                 |        8083 |   12 |          531 | 2023-02-04     |      4 | unavailable  |
+|    7263 | Momo                                         |        3660 |   77 |         2013 | 2023-04-07     |      3 | unavailable  |
+|    7271 | Honeydripper                                 |        9400 |   27 |         1375 | 2022-12-16     |      7 | unavailable  |
+|    7299 | 48 Shades                                    |        9237 |   96 |         3070 | 2022-12-22     |      5 | in stock     |
+|    7319 | French Connection II                         |        5351 |   62 |         3976 | 2022-12-16     |      0 | in stock     |
+|    7326 | Eyes of Laura Mars                           |        2827 |   59 |         9702 | 2022-10-27     |      0 | out of stock |
+|    7330 | "Silences of the Palace                      |           0 |  404 |           57 | 0000-00-00     |   2022 | 0            |
+|    7333 | Sometimes They Come Back... for More         |        6150 |   18 |         6894 | 2022-12-07     |      5 | unavailable  |
+|    7335 | "Cosmonaut                                   |           0 | 9972 |           35 | 0000-00-00     |   2023 | 6            |
+|    7339 | Inception                                    |         493 |   62 |         4557 | 2023-09-23     |      2 | available    |
+|    7345 | Hell                                         |        8206 |   37 |         8266 | 2023-08-14     |      4 | available    |
+|    7357 | Fighting Elegy (Kenka erejii)                |        3973 |   91 |         7601 | 2023-02-15     |      9 | in stock     |
+|    7360 | So Dear to My Heart                          |        4746 |   56 |         1180 | 2022-11-27     |      7 | out of stock |
+|    7367 | Jennifer's Body                              |        4764 |    0 |         8370 | 2023-08-02     |      2 | available    |
+|    7384 | Dog Tags                                     |        5895 |   82 |         9377 | 2023-08-25     |      3 | out of stock |
+|    7420 | Pompeii                                      |        3235 |   58 |         2177 | 2022-12-15     |      8 | out of stock |
+|    7422 | Bandidas                                     |        8304 |   66 |         2226 | 2023-06-09     |      6 | available    |
+|    7434 | "Skulls                                      |           0 | 5339 |            2 | 0000-00-00     |   2022 | 4            |
+|    7459 | "Matter of Taste                             |           0 |    0 |         9067 | 0000-00-00     |   5342 | 2023-07-01   |
+|    7461 | All the Real Girls                           |        2137 |   87 |         3470 | 2023-03-23     |      7 | out of stock |
+|    7484 | Sparrows Dance                               |        6569 |   44 |         8421 | 2023-09-27     |      7 | unavailable  |
+|    7546 | Bedazzled                                    |        5338 |   47 |         2114 | 2023-04-21     |      0 | unavailable  |
+|    7548 | Harriet the Spy                              |        9283 |   95 |         5320 | 2023-02-16     |      6 | out of stock |
+|    7553 | Strul                                        |        5603 |   21 |         8434 | 2023-02-14     |      4 | in stock     |
+|    7554 | "Professional                                |           0 | 2455 |           39 | 0000-00-00     |   2023 | 5            |
+|    7559 | Magnolia                                     |        7169 |   87 |         8412 | 2023-08-15     |      5 | out of stock |
+|    7595 | Stargate                                     |        1733 |    2 |         5572 | 2023-04-25     |      5 | available    |
+|    7602 | Mercy                                        |         463 |   50 |         8802 | 2023-07-25     |      2 | available    |
+|    7628 | Some Kind of Hero                            |        7076 |   62 |         7035 | 2023-05-15     |      6 | out of stock |
+|    7630 | Defenseless                                  |        1217 |   37 |         7368 | 2023-07-24     |      5 | out of stock |
+|    7632 | Braddock: Missing in Action III              |        4687 |   43 |         1354 | 2023-02-08     |      2 | unavailable  |
+|    7657 | Unbroken                                     |        4766 |   51 |         2629 | 2023-03-31     |      3 | in stock     |
+|    7660 | "Anarchist Cookbook                          |           0 | 4368 |           91 | 0000-00-00     |   2022 | 1            |
+|    7682 | On Earth as It Is in Heaven (AsÃ­ en el      |        6760 |    7 |         8006 | 2023-02-25     |      3 | out of stock |
+|    7685 | Weekend at Bernie's II                       |        2151 |   77 |         7165 | 2023-01-09     |      8 | out of stock |
+|    7687 | "Unsuspected                                 |           0 | 2702 |           79 | 0000-00-00     |   2023 | 4            |
+|    7705 | Hans (Kukkulan kuningas)                     |        5347 |   60 |         5773 | 2023-08-07     |      9 | unavailable  |
+|    7728 | "Game Plan                                   |           0 | 8740 |           36 | 0000-00-00     |   2023 | 8            |
+|    7754 | "Woman Rebels                                |           0 | 5227 |           51 | 0000-00-00     |   2022 | 6            |
+|    7755 | Skin Deep                                    |        9291 |    9 |         2503 | 2022-11-20     |      8 | out of stock |
+|    7761 | Starting Over                                |          18 |   73 |         5154 | 2023-07-23     |      4 | available    |
+|    7763 | Ernest Rides Again                           |        2500 |   10 |         7495 | 2023-05-22     |      6 | out of stock |
+|    7782 | Girl Crazy                                   |        4687 |   82 |         2505 | 2023-04-06     |      9 | unavailable  |
+|    7818 | "Last Run                                    |           0 | 3082 |           84 | 0000-00-00     |   2023 | 0            |
+|    7824 | "Groundstar Conspiracy                       |           0 | 5799 |           98 | 0000-00-00     |   2023 | 0            |
+|    7827 | "Promise                                     |           0 |    0 |         6611 | 0000-00-00     |    930 | 2023-05-29   |
+|    7841 | Xtro 3: Watch the Skies                      |         912 |   29 |         9242 | 2022-12-25     |      2 | in stock     |
+|    7854 | "Comebacks                                   |           0 | 6201 |           75 | 0000-00-00     |   2023 | 2            |
+|    7855 | Funny People                                 |        7922 |   47 |         5172 | 2023-01-18     |      4 | in stock     |
+|    7861 | "Coast Guard                                 |           0 | 9361 |           63 | 0000-00-00     |   2022 | 6            |
+|    7863 | "Long                                        |           0 |    0 |         2057 | 0000-00-00     |    668 | 2023-09-12   |
+|    7865 | Chinese Odyssey 2002 (Tian xia wu shuang     |         254 |   91 |         1701 | 2023-09-10     |      8 | out of stock |
+|    7866 | "Tall Target                                 |           0 | 6784 |           24 | 0000-00-00     |   2022 | 7            |
+|    7867 | "Glass House                                 |           0 | 8119 |            4 | 0000-00-00     |   2022 | 7            |
+|    7884 | Look What's Happened to Rosemary's Baby      |        6891 |   94 |         2648 | 2023-03-05     |      7 | in stock     |
+|    7888 | Cheech and Chong's Animated Movie            |        4934 |   65 |         3966 | 2023-01-26     |      1 | in stock     |
+|    7894 | Juice                                        |        3387 |   46 |         1662 | 2022-11-10     |      1 | available    |
+|    7900 | Nurse Betty                                  |        1616 |   89 |         4355 | 2023-03-02     |      8 | out of stock |
+|    7908 | "Acid House                                  |           0 | 6799 |           32 | 0000-00-00     |   2023 | 5            |
+|    7918 | Blind Fury                                   |        1631 |   25 |         8422 | 2023-03-22     |      1 | available    |
+|    7925 | "Lady of Chance                              |           0 |   48 |           57 | 0000-00-00     |   2022 | 8            |
+|    7958 | Unfinished Song (Song for Marion)            |        3656 |   78 |         2781 | 2023-02-28     |      7 | out of stock |
+|    7959 | Pursuit to Algiers                           |        4649 |   87 |         2750 | 2023-04-21     |      2 | out of stock |
+|    7968 | Come Live with Me                            |        7454 |   15 |         7625 | 2023-05-08     |      3 | in stock     |
+|    7986 | "His Secret Life (a.k.a. Ignorant Fairie     |           0 |    0 |         5863 | 0000-00-00     |   4133 | 2022-12-06   |
+|    7999 | The Appointments of Dennis Jennings          |        2364 |   53 |         9223 | 2022-11-01     |      1 | available    |
+|    8008 | "Conspiracy                                  |           0 | 1804 |           78 | 0000-00-00     |   2022 | 2            |
+|    8013 | Rambo III                                    |        9006 |   17 |         7120 | 2022-11-04     |      3 | out of stock |
+|    8027 | In Two Minds                                 |        6970 |   42 |         3296 | 2023-02-02     |      2 | available    |
+|    8048 | Toute la mÃ©moire du monde                   |        8607 |    1 |         8607 | 2023-05-12     |      7 | unavailable  |
+|    8052 | "Desperate Hours                             |           0 | 4685 |           90 | 0000-00-00     |   2023 | 1            |
+|    8060 | "Streetcar Named Desire                      |           0 | 2452 |           31 | 0000-00-00     |   2022 | 8            |
+|    8116 | Tap                                          |        5334 |   64 |         6427 | 2023-05-17     |      9 | unavailable  |
+|    8124 | "Thick as Thieves (a.k.a. Code               |           0 | 4380 |           11 | 0000-00-00     |   2023 | 8            |
+|    8127 | Bottle Shock                                 |        1559 |   69 |         6024 | 2023-03-01     |      1 | in stock     |
+|    8128 | Finder's Fee                                 |        5213 |   82 |         2564 | 2023-08-02     |      9 | available    |
+|    8165 | Long Hello and Short Goodbye                 |        2947 |   85 |         2887 | 2022-11-02     |      3 | in stock     |
+|    8166 | Broadway Rhythm                              |        8420 |   37 |         7856 | 2023-08-26     |      1 | out of stock |
+|    8180 | Me tulemme taas                              |        3616 |   97 |         8634 | 2023-08-19     |      7 | available    |
+|    8200 | "Stepdaughter                                |           0 | 7896 |           25 | 0000-00-00     |   2023 | 6            |
+|    8227 | Someone I Loved (Je l'aimais)                |        2851 |   80 |         2368 | 2023-05-19     |      4 | out of stock |
+|    8229 | They Made Me a Criminal (I Became a Crim     |        8601 |   53 |         3627 | 2023-06-17     |      5 | unavailable  |
+|    8232 | "Scalphunters                                |           0 | 9078 |           16 | 0000-00-00     |   2022 | 2            |
+|    8234 | "Woman in the Fifth                          |           0 |    0 |         2577 | 0000-00-00     |   7313 | 2022-11-05   |
+|    8243 | Beats Being Dead (Dreileben - Etwas Bess     |        7839 |    3 |         1318 | 2022-10-08     |      5 | in stock     |
+|    8246 | "Dispatch from Reuter's                      |           0 | 2442 |           91 | 0000-00-00     |   2023 | 0            |
+|    8247 | "Moustache                                   |           0 | 5769 |           11 | 0000-00-00     |   2022 | 1            |
+|    8250 | "Crocodile Hunter: Collision Course          |           0 |  154 |           25 | 0000-00-00     |   2022 | 6            |
+|    8262 | "Great Debaters                              |           0 |  869 |           74 | 0000-00-00     |   2023 | 4            |
+|    8267 | "Young Victoria                              |           0 |  210 |           80 | 0000-00-00     |   2023 | 1            |
+|    8270 | Porgy and Bess                               |        7018 |   47 |           21 | 2023-04-11     |      4 | available    |
+|    8273 | Black Dragons                                |        3602 |    0 |         5001 | 2023-03-21     |      2 | out of stock |
+|    8300 | Knights of Badassdom                         |        7711 |   64 |         2813 | 2023-01-16     |      0 | available    |
+|    8316 | About Time                                   |        7461 |   46 |         4936 | 2023-02-19     |      4 | out of stock |
+|    8318 | "Affair of the Heart                         |           0 | 8637 |           31 | 0000-00-00     |   2023 | 5            |
+|    8333 | Deep Cover                                   |         809 |   91 |         3032 | 2023-08-11     |      3 | available    |
+|    8351 | Dr Money and the Boy with No Penis           |        2562 |   37 |         3989 | 2023-05-12     |      2 | unavailable  |
+|    8365 | Welcome to Macintosh                         |         736 |    4 |         3412 | 2023-01-04     |      3 | in stock     |
+|    8372 | Wicked Blood                                 |        3867 |    3 |          189 | 2023-08-15     |      2 | available    |
+|    8379 | "Cremator                                    |           0 | 1354 |           77 | 0000-00-00     |   2023 | 9            |
+|    8382 | "Rocker                                      |           0 | 2698 |           97 | 0000-00-00     |   2023 | 7            |
+|    8387 | One of Our Dinosaurs Is Missing              |        4610 |    8 |         5094 | 2023-06-13     |      0 | available    |
+|    8397 | Kindergarten Cop                             |        5654 |   16 |         8274 | 2023-08-05     |      8 | unavailable  |
+|    8431 | Monkey Business                              |        2957 |   85 |         2107 | 2023-08-07     |      0 | unavailable  |
+|    8438 | Chicken Run                                  |        2723 |   91 |         1657 | 2023-04-09     |      1 | out of stock |
+|    8448 | "Rain People                                 |           0 | 3224 |           62 | 0000-00-00     |   2023 | 5            |
+|    8457 | Oki's Movie (Ok-hui-ui yeonghwa)             |         331 |   84 |         1842 | 2022-12-28     |      8 | available    |
+|    8475 | Firestorm                                    |        6526 |    2 |         1007 | 2022-10-21     |      5 | unavailable  |
+|    8480 | Snoopy Come Home                             |        8364 |   94 |         2778 | 2023-06-01     |      1 | available    |
+|    8484 | Polly of the Circus                          |         119 |   83 |          856 | 2023-02-19     |      4 | unavailable  |
+|    8494 | "Night                                       |           0 |    0 |         4526 | 0000-00-00     |   1421 | 2023-04-09   |
+|    8526 | Across the Sea of Time                       |        6914 |   68 |         2058 | 2022-12-08     |      3 | available    |
+|    8533 | "King's Speech                               |           0 | 1315 |           41 | 0000-00-00     |   2023 | 9            |
+|    8534 | Eila                                         |        8033 |   60 |         6814 | 2022-12-20     |      8 | unavailable  |
+|    8552 | Girl of Finland (Lapualaismorsian)           |        2152 |   34 |         3264 | 2023-09-13     |      0 | unavailable  |
+|    8558 | "Breach                                      |           0 |    0 |         4153 | 0000-00-00     |   7339 | 2023-03-14   |
+|    8564 | "Lost World                                  |           0 | 8633 |            3 | 0000-00-00     |   2023 | 6            |
+|    8568 | Somebody is Waiting                          |        1495 |   70 |         2018 | 2023-05-31     |      8 | out of stock |
+|    8571 | "Country Bears                               |           0 | 6570 |           88 | 0000-00-00     |   2023 | 7            |
+|    8574 | "Music Lovers                                |           0 | 1558 |           68 | 0000-00-00     |   2022 | 7            |
+|    8580 | "Uninvited                                   |           0 | 3144 |           15 | 0000-00-00     |   2022 | 3            |
+|    8606 | 21 Hours at Munich                           |        8142 |    6 |         1960 | 2023-06-21     |      3 | out of stock |
+|    8628 | Bye-Bye Bin Laden                            |        2363 |   64 |         4005 | 2023-01-08     |      3 | in stock     |
+|    8632 | Milarepa                                     |        9283 |   17 |         8965 | 2023-08-20     |      0 | out of stock |
+|    8636 | Evil Toons                                   |         808 |   85 |          713 | 2022-11-23     |      4 | out of stock |
+|    8650 | Delusion                                     |        8473 |   92 |         8205 | 2023-02-02     |      4 | unavailable  |
+|    8661 | Opfergang                                    |        1861 |    0 |         9658 | 2022-10-23     |      4 | in stock     |
+|    8664 | Latin Music USA                              |        4630 |   47 |          776 | 2023-02-27     |      9 | available    |
+|    8703 | Jetsons: The Movie                           |        8665 |    3 |         1434 | 2023-08-27     |      1 | available    |
+|    8707 | "Neon Bible                                  |           0 |  780 |           62 | 0000-00-00     |   2023 | 5            |
+|    8708 | THX 1138                                     |        4825 |   95 |         1543 | 2023-04-14     |      8 | in stock     |
+|    8714 | Maximum Overdrive                            |        4549 |   20 |         5515 | 2023-01-30     |      4 | available    |
+|    8719 | Napoleon and Samantha                        |        7256 |   87 |         3567 | 2023-08-11     |      2 | unavailable  |
+|    8736 | Hellraiser: Hellseeker                       |        4223 |   42 |         2672 | 2023-03-05     |      3 | unavailable  |
+|    8772 | "South                                       |           0 | 7990 |           35 | 0000-00-00     |   2023 | 4            |
+|    8780 | Ghosts of Girlfriends Past                   |        5894 |   97 |         5265 | 2023-04-28     |      7 | unavailable  |
+|    8784 | Beatdown                                     |        8968 |   90 |         9678 | 2023-04-23     |      4 | unavailable  |
+|    8788 | "Age of Stupid                               |           0 | 3789 |           79 | 0000-00-00     |   2022 | 3            |
+|    8797 | Vasermil                                     |        3209 |   24 |         5065 | 2023-05-31     |      3 | in stock     |
+|    8799 | You're Next                                  |        1487 |   91 |         7807 | 2023-06-24     |      9 | unavailable  |
+|    8804 | "Sword and the Dragon                        |           0 | 5180 |            2 | 0000-00-00     |   2023 | 7            |
+|    8814 | "Intruder                                    |           0 | 5048 |           67 | 0000-00-00     |   2023 | 5            |
+|    8823 | My Amityville Horror                         |        4339 |    0 |         6115 | 2023-01-03     |      5 | out of stock |
+|    8840 | Creature from Black Lake                     |        8981 |   84 |         1415 | 2023-04-14     |      9 | unavailable  |
+|    8842 | Who Killed Bambi? (Qui a tuÃ© Bambi?)        |        8534 |   66 |         4167 | 2023-07-15     |      2 | out of stock |
+|    8862 | Johnny Be Good                               |        2299 |   75 |         4855 | 2023-04-02     |      5 | out of stock |
+|    8864 | Sex in Chains (Geschlecht in Fesseln)        |        5470 |   81 |         1683 | 2023-02-13     |      8 | out of stock |
+|    8867 | Bad Guy (Nabbeun namja)                      |         765 |   54 |         7151 | 2023-04-23     |      0 | in stock     |
+|    8873 | "Lovers on the Bridge                        |           0 |    0 |          614 | 0000-00-00     |   3694 | 2023-01-16   |
+|    8877 | Vizontele                                    |        8402 |   46 |         9854 | 2023-09-27     |      3 | unavailable  |
+|    8879 | Orphans of the Storm                         |        5337 |    0 |         3064 | 2023-09-09     |      2 | unavailable  |
+|    8884 | Silentium                                    |        8764 |   72 |         6679 | 2023-09-06     |      6 | out of stock |
+|    8903 | Joanna                                       |        3797 |   87 |         3522 | 2023-09-03     |      5 | unavailable  |
+|    8910 | Ollin oppivuodet                             |        4013 |   82 |         9833 | 2022-11-01     |      4 | unavailable  |
+|    8939 | Barfi!                                       |        5907 |   47 |         3808 | 2022-11-11     |      8 | out of stock |
+|    8945 | "March of the Penguins (Marche de l'empe     |           0 | 6210 |           22 | 0000-00-00     |   2023 | 1            |
+|    8957 | Killing Words (Palabras encadenadas)         |        8329 |   72 |         4517 | 2023-09-23     |      1 | in stock     |
+|    8975 | Women on the Verge of a Nervous Breakdow     |        7701 |   96 |         4028 | 2023-01-21     |      8 | available    |
+|    8981 | Morgan!                                      |        6573 |   49 |         7522 | 2023-04-03     |      9 | in stock     |
+|    8994 | Blade on the Feather (Deep Cover)            |        1466 |    6 |         6538 | 2023-04-19     |      9 | available    |
+|    8998 | That's Black Entertainment                   |        3485 |   32 |         6174 | 2022-10-23     |      7 | out of stock |
+|    9006 | Yolki 2                                      |        9961 |   30 |         6620 | 2023-04-06     |      5 | unavailable  |
+|    9026 | Lost in Austen                               |        6701 |   46 |         7426 | 2023-04-19     |      2 | in stock     |
+|    9029 | Killer at Large                              |        6714 |   80 |         2471 | 2022-10-06     |      6 | out of stock |
+|    9046 | "Bad and the Beautiful                       |           0 | 1106 |           83 | 0000-00-00     |   2022 | 0            |
+|    9050 | "Family Tree                                 |           0 | 8733 |           43 | 0000-00-00     |   2023 | 3            |
+|    9055 | The Burglar                                  |        1989 |   74 |         5840 | 2023-04-05     |      0 | unavailable  |
+|    9068 | Dead Man Down                                |        6885 |   75 |         4480 | 2023-04-30     |      8 | unavailable  |
+|    9088 | "Quiet Earth                                 |           0 |  876 |           16 | 0000-00-00     |   2023 | 8            |
+|    9102 | "Brice Man                                   |           0 | 3144 |           41 | 0000-00-00     |   2023 | 6            |
+|    9124 | Children of the Corn: Revelation             |        1737 |   46 |          351 | 2023-03-22     |      1 | unavailable  |
+|    9129 | "Prodigal Son                                |           0 |  184 |           43 | 0000-00-00     |   2023 | 0            |
+|    9134 | Robots                                       |        2168 |   38 |         9288 | 2022-12-15     |      2 | in stock     |
+|    9153 | Comrades                                     |        7741 |   72 |         8746 | 2022-12-24     |      0 | available    |
+|    9156 | Souls for Sale                               |        1446 |   30 |         4578 | 2023-02-04     |      8 | unavailable  |
+|    9201 | 101 Dalmatians (One Hundred and One Dalm     |        7621 |   10 |         8283 | 2023-07-18     |      6 | out of stock |
+|    9215 | From Beginning to End (Do ComeÃ§o ao Fim     |        4810 |   74 |         3734 | 2023-01-28     |      9 | out of stock |
+|    9230 | Laurel Canyon                                |         404 |   59 |         6926 | 2023-02-24     |      8 | available    |
+|    9246 | Comme un chef                                |        7864 |   23 |         6042 | 2023-07-23     |      8 | out of stock |
+|    9258 | Ice Age 4: Continental Drift                 |        5373 |   60 |          534 | 2023-02-08     |      1 | in stock     |
+|    9264 | "Baytown Outlaws                             |           0 | 7604 |           76 | 0000-00-00     |   2023 | 5            |
+|    9282 | The Police Serve the Citizens?               |        6752 |   22 |         7275 | 2023-06-09     |      4 | in stock     |
+|    9293 | Two Bits                                     |        7007 |    6 |         2560 | 2022-12-10     |      8 | out of stock |
+|    9299 | Mr. & Mrs. Bridge                            |        3809 |   15 |          749 | 2023-08-15     |      0 | in stock     |
+|    9308 | Radio On                                     |        7586 |   27 |         7570 | 2023-07-11     |      4 | unavailable  |
+|    9312 | Feed                                         |        9314 |   57 |         8511 | 2022-11-30     |      4 | available    |
+|    9325 | Samurai Fiction (SF: Episode One)            |        6104 |   85 |         4264 | 2023-04-19     |      4 | out of stock |
+|    9346 | Return with Honor                            |        5253 |   65 |         5124 | 2023-01-21     |      1 | available    |
+|    9355 | Questioning Darwin                           |        7492 |   54 |         2773 | 2023-08-05     |      5 | unavailable  |
+|    9367 | Nowhere                                      |        4849 |   73 |         9912 | 2023-09-05     |      6 | out of stock |
+|    9368 | Marvin Gaye: What's Going On                 |        5618 |   64 |         3779 | 2023-04-26     |      5 | out of stock |
+|    9374 | These Amazing Shadows                        |        6049 |   19 |         7769 | 2023-06-27     |      1 | in stock     |
+|    9380 | "Big Knife                                   |           0 | 2136 |           20 | 0000-00-00     |   2023 | 9            |
+|    9383 | Three Coins in the Fountain                  |        6997 |   43 |          864 | 2023-06-03     |      8 | in stock     |
+|    9388 | Paris Belongs to Us (Paris nous appartie     |        7905 |   84 |         7021 | 2023-04-01     |      2 | unavailable  |
+|    9398 | Dynamite                                     |        9572 |   89 |         3775 | 2022-12-23     |      5 | available    |
+|    9409 | Sacco and Vanzetti (Sacco e Vanzetti)        |        5558 |   95 |         2369 | 2023-07-28     |      4 | out of stock |
+|    9419 | Heroes for Sale                              |        2367 |   53 |          520 | 2022-11-08     |      0 | unavailable  |
+|    9423 | Blood on the Sun                             |        8364 |   81 |         3091 | 2022-12-17     |      0 | out of stock |
+|    9476 | Gettysburg                                   |        5894 |   90 |         1227 | 2023-08-30     |      5 | out of stock |
+|    9478 | War of the Worlds                            |        5456 |    8 |         7635 | 2023-02-28     |      7 | out of stock |
+|    9489 | Tenderness                                   |        3364 |   13 |         9523 | 2023-01-24     |      3 | out of stock |
+|    9492 | Lone Wolf and Cub: Sword of Vengeance (K     |        2834 |    8 |          980 | 2023-04-22     |      9 | in stock     |
+|    9493 | Into the West                                |         823 |   97 |         7015 | 2023-02-23     |      4 | in stock     |
+|    9514 | Shaolin Wooden Men (Shao Lin mu ren xian     |        1757 |    6 |         6776 | 2023-08-06     |      9 | in stock     |
+|    9518 | Love Potion #9                               |        2970 |   66 |         5486 | 2023-08-18     |      5 | available    |
+|    9520 | Bonhoeffer: Agent of Grace                   |        4907 |   53 |          509 | 2023-03-24     |      7 | out of stock |
+|    9522 | Phantom of the Paradise                      |        7385 |   80 |         9813 | 2022-12-17     |      2 | in stock     |
+|    9549 | "Hound of the Baskervilles                   |           0 | 6724 |           91 | 0000-00-00     |   2023 | 6            |
+|    9560 | Special Forces (Forces spÃ©ciales)           |        7213 |    3 |         6972 | 2023-02-07     |      8 | available    |
+|    9587 | Addams Family Reunion                        |        9566 |   98 |         5907 | 2022-11-18     |      0 | unavailable  |
+|    9595 | Jauja                                        |        9896 |   36 |         3866 | 2023-05-02     |      7 | in stock     |
+|    9612 | "Good Morning                                |           0 | 6693 |           50 | 0000-00-00     |   2023 | 8            |
+|    9619 | Woodstock Diary                              |        4247 |   41 |         9825 | 2023-02-20     |      5 | unavailable  |
+|    9622 | Anger Management                             |        8361 |   82 |         3094 | 2023-07-11     |      0 | in stock     |
+|    9626 | Spiral                                       |        4265 |    9 |          926 | 2023-07-23     |      2 | in stock     |
+|    9632 | Burn! (Queimada)                             |        8080 |    9 |         9416 | 2023-05-25     |      5 | in stock     |
+|    9640 | Kramer vs. Kramer                            |        4403 |    7 |         1757 | 2023-02-20     |      9 | unavailable  |
+|    9641 | "Deeper Shade of Blue                        |           0 |  459 |           37 | 0000-00-00     |   2022 | 4            |
+|    9655 | Spooner                                      |        8589 |   74 |         2322 | 2022-10-30     |      3 | in stock     |
+|    9660 | Memories of Me                               |          44 |   30 |         8523 | 2023-06-26     |      1 | out of stock |
+|    9665 | "Sixth Sense                                 |           0 | 8444 |           22 | 0000-00-00     |   2023 | 2            |
+|    9677 | "Black Waters of Echo's Pond                 |           0 | 8345 |            8 | 0000-00-00     |   2023 | 9            |
+|    9683 | Frankie and Johnny                           |        5524 |   23 |         4005 | 2023-10-03     |      7 | available    |
+|    9687 | Devil's Diary                                |        8043 |   73 |         4122 | 2023-02-27     |      5 | unavailable  |
+|    9689 | Chaos                                        |        9885 |   84 |         6034 | 2023-01-17     |      8 | available    |
+|    9692 | "Flintstones                                 |           0 | 5471 |           53 | 0000-00-00     |   2023 | 4            |
+|    9695 | Miracle in Milan (Miracolo a Milano)         |        6785 |   42 |         1585 | 2023-04-01     |      7 | in stock     |
+|    9707 | Butch Cassidy and the Sundance Kid           |        3749 |   44 |         8904 | 2023-01-27     |      6 | unavailable  |
+|    9730 | Arthur                                       |        2793 |   68 |          773 | 2023-03-20     |      5 | in stock     |
+|    9732 | Payback                                      |        3007 |   62 |         4958 | 2023-01-07     |      8 | in stock     |
+|    9741 | Private Lessons                              |        5216 |   35 |         3423 | 2023-09-17     |      6 | in stock     |
+|    9751 | Love Hina Spring Special                     |        4516 |   22 |          923 | 2022-10-11     |      5 | in stock     |
+|    9764 | "Caveman's Valentine                         |           0 | 9106 |           81 | 0000-00-00     |   2022 | 0            |
+|    9771 | Ride in the Whirlwind                        |        5132 |   27 |         7490 | 2023-07-02     |      5 | unavailable  |
+|    9778 | Just a Sigh                                  |        7697 |   48 |          961 | 2023-02-21     |      5 | out of stock |
+|    9799 | "Reincarnation of Peter Proud                |           0 | 2351 |           14 | 0000-00-00     |   2022 | 1            |
+|    9810 | Gone Fishin'                                 |        5212 |   45 |         3487 | 2022-11-07     |      8 | out of stock |
+|    9825 | A Promise                                    |        5623 |   69 |         2243 | 2023-01-18     |      5 | available    |
+|    9834 | Tideland                                     |        9209 |   83 |         8937 | 2023-04-21     |      9 | unavailable  |
+|    9837 | Barbed Wire                                  |        5634 |   88 |         8347 | 2023-07-04     |      0 | in stock     |
+|    9843 | Sixteen Candles                              |        9837 |   65 |         2744 | 2023-06-23     |      6 | unavailable  |
+|    9855 | The Longest Week                             |        6507 |    7 |         9546 | 2023-04-14     |      4 | unavailable  |
+|    9874 | "LucÃ­a                                      |           0 |    0 |         6657 | 0000-00-00     |   6228 | 2023-08-23   |
+|    9876 | ROME EMPIRE                                  |          78 |  780 |         7657 | 2024-08-10     |      3 | ACTIVE       |
+|    9884 | Stars in My Crown                            |        5751 |   27 |         9844 | 2023-09-02     |      8 | out of stock |
+|    9888 | Legends of Oz: Dorothy's Return              |        6621 |    8 |         2091 | 2023-08-02     |      8 | unavailable  |
+|    9897 | First Man Into Space                         |        1415 |   34 |         4325 | 2023-06-02     |      3 | unavailable  |
+|    9930 | Feds                                         |        5395 |   72 |         1419 | 2023-04-20     |      7 | out of stock |
+|    9933 | Detachment                                   |        4730 |   87 |         3031 | 2022-12-11     |      5 | in stock     |
+|    9939 | In My Father's Den                           |        8775 |   54 |         2046 | 2023-07-29     |      9 | available    |
+|    9947 | "Burial Ground (a.k.a. Zombie Horror) (a     |           0 | 8976 |           71 | 0000-00-00     |   2023 | 7            |
+|    9957 | "Me You Them (Eu                             |           0 |    0 |         7567 | 0000-00-00     |    542 | 2023-04-17   |
+|    9964 | Shatter Dead                                 |        5472 |   47 |         4929 | 2023-09-16     |      9 | unavailable  |
+|    9965 | Palms (Ladoni)                               |        1473 |   78 |         6534 | 2023-06-25     |      9 | unavailable  |
+|    9985 | Everything or Nothing: The Untold Story      |        6786 |   37 |         2607 | 2023-05-02     |      0 | unavailable  |
+|    9993 | "Quest                                       |           0 | 4311 |           80 | 0000-00-00     |   2023 | 7            |
+|    9996 | Death Warrant                                |        3799 |   85 |          641 | 2023-09-21     |      1 | in stock     |
++---------+----------------------------------------------+-------------+------+--------------+----------------+--------+--------------+
+958 rows in set (0.01 sec)
+mysql> SELECT * FROM BOOK_AUTHOR;
++---------+-----------+
+| BOOK_ID | AUTHOR_ID |
++---------+-----------+
+|      45 |        34 |
+|      49 |       123 |
++---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO BOOK_AUTHOR VALUES(34,89);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO BOOK_AUTHOR VALUES(95,49);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> SELECT * FROM BOOK_AUTHOR;
++---------+-----------+
+| BOOK_ID | AUTHOR_ID |
++---------+-----------+
+|      45 |        34 |
+|      95 |        49 |
+|      34 |        89 |
+|      49 |       123 |
++---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE BOOK_AUTHOR SET AUTHOR_ID=0 WHERE BOOK_ID=34;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM BOOK_AUTHOR;
++---------+-----------+
+| BOOK_ID | AUTHOR_ID |
++---------+-----------+
+|      34 |         0 |
+|      45 |        34 |
+|      95 |        49 |
+|      49 |       123 |
++---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> DELETE FROM BOOK WHERE BOOK_ID=95;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM BOOK_AUTHOR;
++---------+-----------+
+| BOOK_ID | AUTHOR_ID |
++---------+-----------+
+|      34 |         0 |
+|      45 |        34 |
+|      95 |        49 |
+|      49 |       123 |
++---------+-----------+
+4 rows in set (0.00 sec)
+
+
+
