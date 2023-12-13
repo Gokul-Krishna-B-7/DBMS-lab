@@ -1,0 +1,59 @@
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE ManageBooks(
+    ->     IN action VARCHAR(10),  -- Action: 'INSERT', 'UPDATE', 'DELETE'
+    ->     IN bookID INT,          -- Book ID for UPDATE and DELETE
+    ->     IN bookTitle VARCHAR(50), -- Book Title for INSERT and UPDATE
+    ->     IN languageID INT,      -- Language ID for INSERT and UPDATE
+    ->     IN mrp BIGINT,          -- MRP for INSERT and UPDATE
+    ->     IN publisherID INT,     -- Publisher ID for INSERT and UPDATE
+    ->     IN publishedDate DATE,  -- Published Date for INSERT and UPDATE
+    ->     IN volume INT,          -- Volume for INSERT and UPDATE
+    ->     IN status VARCHAR(20)   -- Status for INSERT and UPDATE
+    -> )
+    -> BEGIN
+    ->     IF action = 'INSERT' THEN
+    ->         INSERT INTO book (Title, Language_id, MRP, Publisher_id, Published_date, Volume, Status)
+    ->         VALUES (bookTitle, languageID, mrp, publisherID, publishedDate, volume, status);
+    ->
+    ->     ELSEIF action = 'UPDATE' THEN
+    ->         UPDATE book
+    ->         SET Title = bookTitle, Language_id = languageID, MRP = mrp, Publisher_id = publisherID,
+    ->             Published_date = publishedDate, Volume = volume, Status = status
+    ->         WHERE Book_id = bookID;
+    ->
+    ->     ELSEIF action = 'DELETE' THEN
+    ->         DELETE FROM book WHERE Book_id = bookID;
+    ->
+    ->     END IF;
+    -> END //
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL ManageBooks('UPDATE', 1, 'Updated Book Title', 2, 3000, 2, '2023-02-15', 2, 'On Loan');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE GetAuthorInfo(
+    ->     IN authorID INT
+    -> )
+    -> BEGIN
+    ->     SELECT *
+    ->     FROM author
+    ->     WHERE Author_id = authorID;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL GetAuthorInfo(1);
++-----------+------------+---------------------+------------+--------+
+| Author_id | Name       | Email               | Phno       | Status |
++-----------+------------+---------------------+------------+--------+
+|         1 | Author One | author1@example.com | 1111111111 | Active |
++-----------+------------+---------------------+------------+--------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)

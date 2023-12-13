@@ -1,0 +1,355 @@
+Microsoft Windows [Version 10.0.22621.2715]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\PC>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 21
+Server version: 8.0.35 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| library            |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| testdb             |
+| world              |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> use library;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_library |
++-------------------+
+| author            |
+| book              |
+| book_issue        |
+| book_return       |
+| bookauthor        |
+| language          |
+| late_fee_rule     |
+| member            |
+| publisher         |
++-------------------+
+9 rows in set (0.00 sec)
+
+mysql> desc bookauthor;
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| Book_id   | int  | NO   | PRI | NULL    |       |
+| Author_id | int  | NO   | PRI | NULL    |       |
++-----------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from bookauthor;
++---------+-----------+
+| Book_id | Author_id |
++---------+-----------+
+|       1 |         1 |
+|       3 |         1 |
+|       2 |         2 |
+|       4 |         2 |
+|       2 |         3 |
+|       5 |         3 |
+|       3 |         4 |
+|       4 |         4 |
+|       5 |         5 |
++---------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> ANSI standard languageANSI standard language
+    ->
+    -> +
+    -> ^C
+mysql> select Author_id from bookauthor where count(Book_id)>1;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select * from author
+    -> ;
++-----------+--------------+---------------------+------------+----------+
+| Author_id | Name         | Email               | Phno       | Status   |
++-----------+--------------+---------------------+------------+----------+
+|         1 | Author One   | author1@example.com | 1111111111 | Active   |
+|         2 | Author Two   | author2@example.com | 2222222222 | Active   |
+|         3 | Author Three | author3@example.com | 3333333333 | Inactive |
+|         4 | Author Four  | author4@example.com | 4444444444 | Active   |
+|         5 | Author Five  | author5@example.com | 5555555555 | Active   |
++-----------+--------------+---------------------+------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select a.name from author a inner join bookauthor ba where count(book_id) >1 group by author;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select a.name from author a inner join bookauthor ba where count(book_id) >1 group by a;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select a.name from author a inner join bookauthor ba on a.author_id = ba.author_id where count(ba.Book_id) >1 group by ba.Author_id;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select a.name from author a inner join bookauthor ba on a.Author_id = ba.Author_id where count(ba.Book_id) >1 group by ba.Author_id^C
+mysql> SELECT a.name
+    -> FROM author a
+    -> INNER JOIN bookauthor ba ON a.Author_id = ba.Author_id
+    -> GROUP BY ba.Author_id
+    -> HAVING COUNT(ba.Book_id) > 1;
++--------------+
+| name         |
++--------------+
+| Author One   |
+| Author Two   |
+| Author Three |
+| Author Four  |
++--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT a.name
+    -> FROM author a
+    -> INNER JOIN bookauthor ba ON a.Author_id = ba.Author_id
+    -> GROUP BY ba.Author_id
+    -> HAVING COUNT(ba.Book_id) > 2;
+Empty set (0.00 sec)
+
+mysql> SELECT a.name
+    -> FROM author a
+    -> INNER JOIN bookauthor ba ON a.Author_id = ba.Author_id
+    -> GROUP BY ba.Author_id
+    -> HAVING COUNT(ba.Book_id) > 0;
++--------------+
+| name         |
++--------------+
+| Author One   |
+| Author Two   |
+| Author Three |
+| Author Four  |
+| Author Five  |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from bookauthor;
++---------+-----------+
+| Book_id | Author_id |
++---------+-----------+
+|       1 |         1 |
+|       3 |         1 |
+|       2 |         2 |
+|       4 |         2 |
+|       2 |         3 |
+|       5 |         3 |
+|       3 |         4 |
+|       4 |         4 |
+|       5 |         5 |
++---------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> select * from bookauthor group by Author_id;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'library.bookauthor.Book_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select count(Author_id) FROM bookauthor GROUP BY Book_id WHERE count(Author_id) > 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE count(Author_id) > 1' at line 1
+mysql> select count(Author_id) FROM bookauthor GROUP BY (Book_id) WHERE count(Author_id) > 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE count(Author_id) > 1' at line 1
+mysql> select count(Author_id) FROM bookauthor WHERE count(Author_id) > 1 group by Bok_id;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select count(Author_id) FROM bookauthor WHERE count(Author_id) > 1 group by Book_id;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select count(Author_id) FROM bookauthor group by Book_id;
++------------------+
+| count(Author_id) |
++------------------+
+|                1 |
+|                2 |
+|                2 |
+|                2 |
+|                2 |
++------------------+
+5 rows in set (0.00 sec)
+
+mysql> select count(Author_id),Book_id FROM bookauthor group by Book_id;
++------------------+---------+
+| count(Author_id) | Book_id |
++------------------+---------+
+|                1 |       1 |
+|                2 |       2 |
+|                2 |       3 |
+|                2 |       4 |
+|                2 |       5 |
++------------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select count(Author_id),Book_id FROM bookauthor group by Book_id where count(Author_id)>1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where count(Author_id)>1' at line 1
+mysql> select count(Author_id) as author_count,Book_id FROM bookauthor group by Book_id where author_count>1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where author_count>1' at line 1
+mysql> select count(Author_id) as author_count,Book_id FROM bookauthor group by Book_id having author_count>1;
++--------------+---------+
+| author_count | Book_id |
++--------------+---------+
+|            2 |       2 |
+|            2 |       3 |
+|            2 |       4 |
+|            2 |       5 |
++--------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select Book_id FROM bookauthor group by Book_id having author_count>1;
+ERROR 1054 (42S22): Unknown column 'author_count' in 'having clause'
+mysql> select Book_id FROM bookauthor group by Book_id having count(Author_id)>1;
++---------+
+| Book_id |
++---------+
+|       2 |
+|       3 |
+|       4 |
+|       5 |
++---------+
+4 rows in set (0.00 sec)
+
+mysql> select Author_idROM b
+    -> select Author_idROM b
+    -> select Author_idROM b^Z^Z^C
+mysql> select a.Author_id from Author a JOIN b.Book_id b ON a.Author_id = b.Author_id where b.Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
+ERROR 1049 (42000): Unknown database 'b'
+mysql> select a.Author_id from Author a JOIN Book_id b ON a.Author_id = b.Author_id where b.Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
+ERROR 1146 (42S02): Table 'library.book_id' doesn't exist
+mysql> select a.Author_id from Author a JOIN Book b ON a.Author_id = b.Author_id where b.Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
+ERROR 1054 (42S22): Unknown column 'b.Author_id' in 'on clause'
+mysql> show tables;
++-------------------+
+| Tables_in_library |
++-------------------+
+| author            |
+| book              |
+| book_issue        |
+| book_return       |
+| bookauthor        |
+| language          |
+| late_fee_rule     |
+| member            |
+| publisher         |
++-------------------+
+9 rows in set (0.00 sec)
+
+mysql> select a.Author_id from author a JOIN aook b ON a.Author_id = b.Author_id where b.Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
+ERROR 1146 (42S02): Table 'library.aook' doesn't exist
+mysql> select a.Author_id from author a JOIN book b ON a.Author_id = b.Author_id where b.Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
+ERROR 1054 (42S22): Unknown column 'b.Author_id' in 'on clause'
+mysql> select a.Author_id from author a JOIN bookauthor b ON a.Author_id = b.Author_id where b.Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
++-----------+
+| Author_id |
++-----------+
+|         1 |
+|         2 |
+|         2 |
+|         3 |
+|         3 |
+|         4 |
+|         4 |
+|         5 |
++-----------+
+8 rows in set (0.00 sec)
+
+mysql> select Author_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
++-----------+
+| Author_id |
++-----------+
+|         1 |
+|         2 |
+|         2 |
+|         3 |
+|         3 |
+|         4 |
+|         4 |
+|         5 |
++-----------+
+8 rows in set (0.00 sec)
+
+mysql> select Author_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>2);
+Empty set (0.00 sec)
+
+mysql> discribe author;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'discribe author' at line 1
+mysql> describe author;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Author_id | int         | NO   | PRI | NULL    |       |
+| Name      | varchar(20) | YES  |     | NULL    |       |
+| Email     | varchar(30) | YES  |     | NULL    |       |
+| Phno      | bigint      | YES  |     | NULL    |       |
+| Status    | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>2);
+Empty set (0.00 sec)
+
+mysql> select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
++-----------+---------+
+| Author_id | book_id |
++-----------+---------+
+|         1 |       3 |
+|         2 |       2 |
+|         2 |       4 |
+|         3 |       2 |
+|         3 |       5 |
+|         4 |       3 |
+|         4 |       4 |
+|         5 |       5 |
++-----------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select Author_id from (select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1)) where count(book_id)>1 group by Author_id;
+ERROR 1248 (42000): Every derived table must have its own alias
+mysql> select newt.Author_id from (select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1)) as newt where count(newt.book_id)>1 group by newt.Author_id;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select newt.Author_id from (select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1)) as newt group by newt.Author_id where count(newt.book_id)>1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where count(newt.book_id)>1' at line 1
+mysql> select newt.Author_id from (select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1)) as newt group by newt.Author_id where count(newt.book_id)>1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where count(newt.book_id)>1' at line 1
+mysql> select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1);
++-----------+---------+
+| Author_id | book_id |
++-----------+---------+
+|         1 |       3 |
+|         2 |       2 |
+|         2 |       4 |
+|         3 |       2 |
+|         3 |       5 |
+|         4 |       3 |
+|         4 |       4 |
+|         5 |       5 |
++-----------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select Author_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1) group by Author_id having count(Book_id)>1;
++-----------+
+| Author_id |
++-----------+
+|         2 |
+|         3 |
+|         4 |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> select newt.Author_id from (select Author_id, book_id from bookauthor where Book_id in (select Book_id FROM bookauthor group by Book_id having count(Author_id)>1)) as newt group by newt.Author_id having count(newt.book_id)>1;
++-----------+
+| Author_id |
++-----------+
+|         2 |
+|         3 |
+|         4 |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql>

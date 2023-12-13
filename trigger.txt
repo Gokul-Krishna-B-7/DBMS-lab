@@ -1,0 +1,183 @@
+Microsoft Windows [Version 10.0.22621.2715]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\PC>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 8.0.35 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| library            |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> create database trigger;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'trigger' at line 1
+mysql> CREATE DATABASE testDB;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use testDB;
+Database changed
+mysql> CREATE TABLE Orders (
+    ->     OrderID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     OrderDate DATE,
+    ->     LastUpdated TIMESTAMP
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER //
+mysql> CREATE TRIGGER UpdateLastUpdated
+    -> BEFORE INSERT ON Orders
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     SET NEW.LastUpdated = NOW();
+    -> END;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> select * from Orders;
+Empty set (0.00 sec)
+
+mysql> desc Orders;
++-------------+-----------+------+-----+---------+----------------+
+| Field       | Type      | Null | Key | Default | Extra          |
++-------------+-----------+------+-----+---------+----------------+
+| OrderID     | int       | NO   | PRI | NULL    | auto_increment |
+| OrderDate   | date      | YES  |     | NULL    |                |
+| LastUpdated | timestamp | YES  |     | NULL    |                |
++-------------+-----------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO Orders (OrderDate) VALUES ('2023-06-30');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Orders;
++---------+------------+---------------------+
+| OrderID | OrderDate  | LastUpdated         |
++---------+------------+---------------------+
+|       1 | 2023-06-30 | 2023-12-12 11:25:23 |
++---------+------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into Orders values(2,'2023-07-07);
+    '> //
+    '> ^C
+mysql> insert into Orders values(2,'2023-07-07);
+    '> insert into Orders values(2,'2023-07-07);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2023-07-07)' at line 2
+mysql> insert into Orders values(2,'2023-07-07);
+    '>
+    '>
+    '>
+    '>
+    '> insert into Orders values(2,'2023-07-07);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2023-07-07)' at line 6
+mysql> insert into Orders values(2,'2023-07-07);
+    '> insert into Orders values(2,'2023-07-07);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2023-07-07)' at line 2
+mysql> ^C
+mysql> ^C
+mysql> insert into Orders values(2,'2023-07-07);
+    '>
+    '>
+    '> insert into Orders values(2,'2023-07-07);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2023-07-07)' at line 4
+mysql> insert into Orders values(2,'2023-07-07);
+    '> //
+    '> INSERT INTO Orders (OrderDate) VALUES ('2023-06-30');
+    '> ^C
+mysql> INSERT INTO Orders VALUES ('2023-06-30');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into Orders values(2,'2023-07-07);
+    '> ^C
+mysql> insert into Orders values(2,'2023-07-07');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> desc Orders
+    -> ;
++-------------+-----------+------+-----+---------+----------------+
+| Field       | Type      | Null | Key | Default | Extra          |
++-------------+-----------+------+-----+---------+----------------+
+| OrderID     | int       | NO   | PRI | NULL    | auto_increment |
+| OrderDate   | date      | YES  |     | NULL    |                |
+| LastUpdated | timestamp | YES  |     | NULL    |                |
++-------------+-----------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into Orders values(2,'2023-07-07',NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  * from Orders;
++---------+------------+---------------------+
+| OrderID | OrderDate  | LastUpdated         |
++---------+------------+---------------------+
+|       1 | 2023-06-30 | 2023-12-12 11:25:23 |
+|       2 | 2023-07-07 | 2023-12-12 11:34:08 |
++---------+------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into Orders values('2023-07-07',NULL);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into Orders values(NULL,'2023-07-07',NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  * from Orders;
++---------+------------+---------------------+
+| OrderID | OrderDate  | LastUpdated         |
++---------+------------+---------------------+
+|       1 | 2023-06-30 | 2023-12-12 11:25:23 |
+|       2 | 2023-07-07 | 2023-12-12 11:34:08 |
+|       3 | 2023-07-07 | 2023-12-12 11:35:08 |
++---------+------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into Orders values(,'2023-07-30',);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ','2023-07-30',)' at line 1
+mysql> insert into Orders values(null,'2023-07-30',null);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  * from Orders;
++---------+------------+---------------------+
+| OrderID | OrderDate  | LastUpdated         |
++---------+------------+---------------------+
+|       1 | 2023-06-30 | 2023-12-12 11:25:23 |
+|       2 | 2023-07-07 | 2023-12-12 11:34:08 |
+|       3 | 2023-07-07 | 2023-12-12 11:35:08 |
+|       4 | 2023-07-30 | 2023-12-12 11:40:08 |
++---------+------------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Orders values(NULL,'2023-12-10','2023-12-11');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  * from Orders;
++---------+------------+---------------------+
+| OrderID | OrderDate  | LastUpdated         |
++---------+------------+---------------------+
+|       1 | 2023-06-30 | 2023-12-12 11:25:23 |
+|       2 | 2023-07-07 | 2023-12-12 11:34:08 |
+|       3 | 2023-07-07 | 2023-12-12 11:35:08 |
+|       4 | 2023-07-30 | 2023-12-12 11:40:08 |
+|       5 | 2023-12-10 | 2023-12-12 12:11:28 |
++---------+------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql>

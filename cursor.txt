@@ -1,0 +1,70 @@
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE DisplayBookTitles()
+    -> BEGIN
+    ->     DECLARE done INT DEFAULT FALSE;
+    ->     DECLARE bookTitle VARCHAR(50);
+    ->
+    ->     -- Declare cursor for the book table
+    ->     DECLARE bookCursor CURSOR FOR
+    ->         SELECT Title FROM book;
+    ->
+    ->     -- Declare handler for cursor
+    ->     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    ->
+    ->     OPEN bookCursor;
+    ->
+    ->     bookLoop: LOOP
+    ->         FETCH bookCursor INTO bookTitle;
+    ->         IF done THEN
+    ->             LEAVE bookLoop;
+    ->         END IF;
+    ->
+    ->         -- Display book title (you can modify this part to do anything with the title)
+    ->         SELECT CONCAT('Book Title: ', bookTitle) AS Result;
+    ->
+    ->     END LOOP;
+    ->
+    ->     CLOSE bookCursor;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL DisplayBookTitles();
++--------------------------------+
+| Result                         |
++--------------------------------+
+| Book Title: Updated Book Title |
++--------------------------------+
+1 row in set (0.01 sec)
+
++----------------------+
+| Result               |
++----------------------+
+| Book Title: Book Two |
++----------------------+
+1 row in set (0.01 sec)
+
++------------------------+
+| Result                 |
++------------------------+
+| Book Title: Book Three |
++------------------------+
+1 row in set (0.01 sec)
+
++-----------------------+
+| Result                |
++-----------------------+
+| Book Title: Book Four |
++-----------------------+
+1 row in set (0.01 sec)
+
++-----------------------+
+| Result                |
++-----------------------+
+| Book Title: Book Five |
++-----------------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)

@@ -1,0 +1,67 @@
+mysql> select book.Title,language.Name
+    -> from book inner join language on
+    -> book.Language_id=language.Lang_id;
++------------+---------+
+| Title      | Name    |
++------------+---------+
+| Book One   | English |
+| Book Two   | Spanish |
+| Book Three | English |
+| Book Four  | French  |
+| Book Five  | German  |
++------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> create view [book_language] as
+    -> select book.Title,language.Name
+    -> from book inner join language on
+    -> book.Language_id=language.Lang_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[book_language] as
+select book.Title,language.Name
+from book inner join language' at line 1
+mysql> create view [book_language] as
+    -> select book.Title,language.Name
+    -> from book inner join language on
+    -> book.Language_id=language.Lang_id
+    -> where language.Name='English';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[book_language] as
+select book.Title,language.Name
+from book inner join language' at line 1
+mysql> CREATE VIEW BookLanguageView AS
+    -> SELECT Book.Title, Language.Name AS LanguageName
+    -> FROM Book
+    -> INNER JOIN Language ON Book.Language_id = Language.Lang_id;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from BookLanguageView;
++------------+--------------+
+| Title      | LanguageName |
++------------+--------------+
+| Book One   | English      |
+| Book Two   | Spanish      |
+| Book Three | English      |
+| Book Four  | French       |
+| Book Five  | German       |
++------------+--------------+
+5 rows in set (0.01 sec)
+
+mysql> DROP VIEW IF EXISTS BookLanguageView;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE VIEW BookLanguageView AS
+    -> SELECT Book.Title, Language.Name
+    -> FROM Book
+    -> INNER JOIN Language ON Book.Language_id = Language.Lang_id;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from BookLanguageView;
++------------+---------+
+| Title      | Name    |
++------------+---------+
+| Book One   | English |
+| Book Two   | Spanish |
+| Book Three | English |
+| Book Four  | French  |
+| Book Five  | German  |
++------------+---------+
+5 rows in set (0.00 sec)
